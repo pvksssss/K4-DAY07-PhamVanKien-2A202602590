@@ -1,28 +1,18 @@
 ---
 doc_id: return-refund-policy
-title: Chính sách đổi trả và hoàn tiền dành cho Người mua
-audience: buyer
+title: Chính sách đổi trả và hoàn tiền
+audience: buyer               # buyer | seller | both
 category: returns-policy
 language: vi
-source_url: https://shopee.vn/docs/policy-return-refund
-retrieved_at: 2026-09-20
-document_version: "2.1"
+source_url: https://example.com/policy/returns
+retrieved_at: 2026-09-18
+document_version: "not-stated"
 ---
 
-# Chính sách đổi trả và hoàn tiền dành cho Người mua
+> Khối metadata phía trên là **template mẫu** cho K4-L3B (bắt buộc: `audience` + `source_url` + `retrieved_at` + `document_version`, cùng ít nhất một trường hữu ích khác như `category`). Thay bằng nguồn công khai thật của nhóm trước khi dùng làm benchmark.
 
-## 1. Điều kiện đổi trả hàng
-Người mua có quyền gửi yêu cầu trả hàng và hoàn tiền trong vòng **7 ngày** (đối với Shopee Mall / LazMall) hoặc **3 ngày** (đối với shop thường) kể từ mốc thời gian nhận hàng thành công.
+# Chính sách đổi trả và hoàn tiền (dữ liệu khởi động)
 
-Các trường hợp được chấp nhận trả hàng:
-- Sản phẩm nhận được bị lỗi kỹ thuật, hỏng hóc do nhà sản xuất hoặc quá trình vận chuyển.
-- Giao sai sản phẩm, sai kích thước, màu sắc hoặc thiếu phụ kiện so với mô tả.
-- Sản phẩm là hàng giả, hàng nhái, không đúng cam kết của thương hiệu.
+Người mua có thể yêu cầu đổi trả trong một khoảng thời gian nhất định kể từ ngày nhận hàng, với điều kiện sản phẩm còn nguyên tem/nhãn và chưa qua sử dụng.
 
-## 2. Quy định về tình trạng sản phẩm
-- Sản phẩm trả lại phải còn nguyên tem, mác, niêm phong và đóng gói ban đầu.
-- Chưa qua sử dụng, chưa qua giặt tẩy hoặc bị biến dạng.
-- Người mua cần cung cấp video quay lại quá trình mở hộp (unboxing video) làm bằng chứng xác thực.
-
-## 3. Thời gian và phương thức hoàn tiền
-- Sau khi người bán nhận lại hàng và xác nhận hợp lệ, tiền sẽ được hoàn về ví điện tử hoặc tài khoản ngân hàng trong vòng **2 đến 5 ngày làm việc**.
+Nhóm cần bổ sung thời hạn cụ thể, điều kiện ngoại lệ (hàng giảm giá, hàng dễ hư hỏng) và quy trình hoàn tiền từ nguồn chính thức trước khi dùng làm benchmark.

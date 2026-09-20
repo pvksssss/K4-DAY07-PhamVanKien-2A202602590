@@ -14,8 +14,8 @@
 
 - Preserve all existing public function and method signatures in `src/`.
 - Required code and tests must run without ChromaDB, neural-model packages, API keys, or network access.
-- Use exactly the five user-provided Markdown policy files in `data/ecommerce/`; do not rewrite their policy content or invent provenance.
-- Record their provenance as `user-provided` and treat source URLs/version fields as supplied metadata, not independently verified facts.
+- Use only public official Shopee Vietnam pages for corpus provenance; do not bypass robots.txt, authentication, CAPTCHA, or access controls.
+- Corpus documents are concise Vietnamese paraphrases with source URLs, not copied full pages.
 - Use exactly five benchmark questions and include at least one `audience` filter A/B run.
 - Do not invent teammate names, group participation, test output, benchmark output, or policy facts.
 - Update `THUC_HIEN.md` after every verified task with files, commands, results, and remaining work.
@@ -245,39 +245,40 @@ git add -- src/agent.py tests/test_regressions.py THUC_HIEN.md
 git commit -m "feat: implement grounded knowledge agent"
 ```
 
-### Task 4: Validate the user-provided e-commerce policy corpus
+### Task 4: Build and audit the return-and-refund policy corpus
 
 **Files:**
-- Use: `data/ecommerce/buyer-dispute-resolution-policy.md`
-- Use: `data/ecommerce/return-refund-policy.md`
-- Use: `data/ecommerce/seller-penalty-violation-policy.md`
-- Use: `data/ecommerce/seller-warranty-policy.md`
-- Use: `data/ecommerce/shipping-fee-refund-policy.md`
-- Create: `data/ecommerce_sources.csv`
+- Create: `data/shopee-return-refund/return-eligibility.md`
+- Create: `data/shopee-return-refund/return-window.md`
+- Create: `data/shopee-return-refund/return-evidence.md`
+- Create: `data/shopee-return-refund/return-shipping-and-packaging.md`
+- Create: `data/shopee-return-refund/refund-methods-and-time.md`
+- Create: `data/shopee-return-refund/seller-return-refund-obligations.md`
+- Create: `data/shopee-return-refund/sources.csv`
 - Create: `tests/test_submission_assets.py`
 - Modify: `THUC_HIEN.md`
 
 **Interfaces:**
-- Consumes: five Markdown policy files supplied by the user.
-- Produces: a validated five-file corpus and one-to-one CSV inventory.
+- Consumes: official public Shopee Vietnam policy pages verified on the collection date.
+- Produces: six Markdown files with parseable front matter and a one-to-one CSV inventory.
 
 - [ ] **Step 1: Add a failing corpus audit test**
 
-Create `tests/test_submission_assets.py` with a small standard-library front-matter parser and assertions that the exact five Markdown files exist, required keys are non-empty, `doc_id == path.stem`, IDs are unique, audiences include `buyer` and `seller`, every supplied `source_url` uses HTTPS on the Shopee domain, and CSV IDs exactly equal document IDs.
+Create `tests/test_submission_assets.py` with a small standard-library front-matter parser and assertions that exactly six Markdown files exist, required keys are non-empty, `doc_id == path.stem`, IDs are unique, audiences include `buyer` and `seller`, every `source_url` uses HTTPS on an official Shopee Vietnam domain, and CSV IDs exactly equal document IDs.
 
 - [ ] **Step 2: Verify the audit fails because the corpus is absent**
 
 Run: `pytest tests/test_submission_assets.py -v`
 
-Expected: failure reporting that the inventory is absent before it is created.
+Expected: failure reporting that `data/shopee-return-refund` or its six documents do not exist.
 
-- [ ] **Step 3: Validate the five supplied documents**
+- [ ] **Step 3: Verify six official source pages**
 
-Check parseable front matter, unique IDs, buyer/seller audience coverage, non-empty policy bodies, and the source metadata supplied in each file. Do not claim external verification that was not performed.
+Search current official Shopee Vietnam help/policy pages for the six named return/refund topics: eligibility, request window, evidence, return shipping/packaging, refund methods/timing, and seller obligations. Record direct canonical page URLs, visible update/effective dates when stated, and concise facts needed for the five benchmark answers. Reject search-result URLs, third-party summaries, inaccessible pages, and pages whose automated access is disallowed.
 
-- [ ] **Step 4: Write the corpus inventory**
+- [ ] **Step 4: Write clean Vietnamese policy documents and inventory**
 
-Keep the supplied documents unchanged and add one matching CSV row per document with `license_or_permission=user-provided`. Remove the earlier six generated crawl documents and their obsolete support CSV files.
+Each file starts with the required front matter and contains focused headings, conditions, exceptions, deadlines, and procedures supported by its source. Use `document_version: "not-stated"` when the official page gives no version. Add one matching CSV row per document with `license_or_permission=public-source`.
 
 - [ ] **Step 5: Run the corpus audit**
 
@@ -288,8 +289,8 @@ Expected: all corpus-audit tests pass.
 - [ ] **Step 6: Update the work log and commit**
 
 ```powershell
-git add -- data tests/test_submission_assets.py THUC_HIEN.md
-git commit -m "data: use supplied e-commerce policy corpus"
+git add -- data/shopee-return-refund tests/test_submission_assets.py THUC_HIEN.md
+git commit -m "data: add Shopee return and refund corpus"
 ```
 
 ### Task 5: Implement the reproducible benchmark
@@ -301,7 +302,7 @@ git commit -m "data: use supplied e-commerce policy corpus"
 - Modify: `THUC_HIEN.md`
 
 **Interfaces:**
-- Consumes: the explicit five user-provided `data/ecommerce/*.md` files, `Document`, `EmbeddingStore`, `FixedSizeChunker`, and `RecursiveChunker`.
+- Consumes: `data/shopee-return-refund/*.md`, `Document`, `EmbeddingStore`, `FixedSizeChunker`, and `RecursiveChunker`.
 - Produces: `parse_policy_file(path)`, `HeadingChunker.chunk(text)`, `LexicalHashEmbedder.__call__(text)`, benchmark result dictionaries, and deterministic text output.
 
 - [ ] **Step 1: Add failing benchmark unit tests**
@@ -358,7 +359,7 @@ Fill student identity, warm-up calculations, algorithm explanations, exact test 
 
 - [ ] **Step 3: Complete `REPORT_NHOM.md` as an honest repository experiment**
 
-Identify this as a single-person submission with three experimental configurations, list all five documents and metadata, include exact strategy metrics, the same five questions/gold answers, filter A/B findings, failure analysis, and demo talking points. Do not attribute configurations to nonexistent teammates.
+Identify this as a single-person submission with three experimental configurations, list all six documents and metadata, include exact strategy metrics, the same five questions/gold answers, filter A/B findings, failure analysis, and demo talking points. Do not attribute configurations to nonexistent teammates.
 
 - [ ] **Step 4: Scan for unfilled template text**
 

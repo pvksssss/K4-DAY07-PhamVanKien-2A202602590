@@ -3,14 +3,15 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 
-CORPUS_FILES = [
-    Path("data/ecommerce/buyer-dispute-resolution-policy.md"),
-    Path("data/ecommerce/return-refund-policy.md"),
-    Path("data/ecommerce/seller-penalty-violation-policy.md"),
-    Path("data/ecommerce/seller-warranty-policy.md"),
-    Path("data/ecommerce/shipping-fee-refund-policy.md"),
-]
-MANIFEST_PATH = Path("data/ecommerce_sources.csv")
+CORPUS_DIR = Path("data/shopee-return-refund")
+EXPECTED_FILES = {
+    "return-eligibility.md",
+    "return-window.md",
+    "return-evidence.md",
+    "return-shipping-and-packaging.md",
+    "refund-methods-and-time.md",
+    "seller-return-refund-obligations.md",
+}
 REQUIRED_METADATA = {
     "doc_id",
     "title",
@@ -35,15 +36,15 @@ def parse_front_matter(path: Path) -> dict[str, str]:
     return metadata
 
 
-def test_ecommerce_corpus_has_exactly_five_selected_documents():
-    assert len(CORPUS_FILES) == 5
-    assert all(path.is_file() for path in CORPUS_FILES)
+def test_return_refund_corpus_has_exactly_six_documents():
+    assert CORPUS_DIR.is_dir()
+    assert {path.name for path in CORPUS_DIR.glob("*.md")} == EXPECTED_FILES
 
 
 def test_every_document_has_traceable_metadata():
     seen_ids = set()
     audiences = set()
-    for path in CORPUS_FILES:
+    for path in sorted(CORPUS_DIR.glob("*.md")):
         metadata = parse_front_matter(path)
         assert REQUIRED_METADATA <= metadata.keys()
         assert all(metadata[key] for key in REQUIRED_METADATA)
@@ -62,10 +63,10 @@ def test_every_document_has_traceable_metadata():
 
 
 def test_sources_csv_matches_documents_one_to_one():
-    with MANIFEST_PATH.open(encoding="utf-8", newline="") as handle:
+    with (CORPUS_DIR / "sources.csv").open(encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
     csv_ids = {row["doc_id"] for row in rows}
-    document_ids = {path.stem for path in CORPUS_FILES}
-    assert len(rows) == 5
+    document_ids = {path.stem for path in CORPUS_DIR.glob("*.md")}
+    assert len(rows) == 6
     assert csv_ids == document_ids
-    assert all(row["license_or_permission"] == "user-provided" for row in rows)
+    assert all(row["license_or_permission"] == "public-source" for row in rows)

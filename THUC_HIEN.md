@@ -76,9 +76,9 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Triển khai `bench.py` với ba chiến lược: fixed-size, recursive và heading/section.
 - [x] Dùng lexical hashing chuẩn hóa, deterministic, không mô tả sai là neural semantic embedding.
 - [x] Unit test benchmark GREEN: **5 passed**.
-- [x] Sinh lại `ket_qua_benchmark.txt` trên 5 file người dùng cung cấp: fixed-size **8/10**, recursive **10/10**, heading **10/10**.
+- [x] Sinh `ket_qua_benchmark.txt` trên corpus cuối 6 file crawl: fixed-size **8/10**, recursive **8/10**, heading **8/10**.
 - [x] A/B filter `audience=seller` loại các chunk buyer khỏi top-3 ở câu hỏi dành cho người bán.
-- [x] Failure case thật: fixed-size đạt 0/2 ở câu bảo hành người bán vì hai mốc `48 giờ làm việc` và `14 ngày làm việc` bị tách sang các chunk khác nhau.
+- [x] Failure case thật: câu bằng chứng hàng giả đạt 0/2 vì chunk chứa `mã QR` và `số seri` không lọt top-3; lexical hashing ưu tiên chunk cùng chủ đề nhưng thiếu đủ evidence.
 
 ### 2026-09-20 — Điều chỉnh corpus theo yêu cầu người dùng
 
@@ -88,3 +88,11 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Xác nhận RED có chủ đích khi tạm thiếu manifest: **1 failed, 2 passed**.
 - [x] Corpus audit và benchmark unit test sau thay thế: **8 passed**.
 - [x] Chạy lại benchmark thành công với kết quả fixed-size **8/10**, recursive **10/10**, heading **10/10**; A/B `audience=seller` loại tài liệu buyer khỏi top-3.
+
+### 2026-09-20 — Quay lại corpus 6 file crawl theo yêu cầu người dùng
+
+- [x] Người dùng đánh giá bộ 5 file quá ngắn và yêu cầu dùng lại 6 file đã crawl.
+- [x] Khôi phục nguyên corpus `data/shopee-return-refund/` cùng `crawl_urls.csv` và `sources.csv` từ commit `33d2e50`, không cần truy cập mạng lại.
+- [x] Khôi phục 2 file mẫu ban đầu trong `data/ecommerce/`, loại 3 file bổ sung và `data/ecommerce_sources.csv` khỏi corpus cuối.
+- [x] Chuyển audit và benchmark về 6 tài liệu; kiểm tra tập trung đạt **8 passed**.
+- [x] Benchmark cuối: fixed-size **8/10**, recursive **8/10**, heading **8/10**; filter `audience=seller` đưa top-3 về đúng tài liệu nghĩa vụ người bán.

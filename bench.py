@@ -12,45 +12,46 @@ from src import Document, EmbeddingStore, FixedSizeChunker, RecursiveChunker
 
 
 CORPUS_FILES = [
-    Path("data/ecommerce/buyer-dispute-resolution-policy.md"),
-    Path("data/ecommerce/return-refund-policy.md"),
-    Path("data/ecommerce/seller-penalty-violation-policy.md"),
-    Path("data/ecommerce/seller-warranty-policy.md"),
-    Path("data/ecommerce/shipping-fee-refund-policy.md"),
+    Path("data/shopee-return-refund/return-eligibility.md"),
+    Path("data/shopee-return-refund/return-window.md"),
+    Path("data/shopee-return-refund/return-evidence.md"),
+    Path("data/shopee-return-refund/return-shipping-and-packaging.md"),
+    Path("data/shopee-return-refund/refund-methods-and-time.md"),
+    Path("data/shopee-return-refund/seller-return-refund-obligations.md"),
 ]
 OUTPUT_PATH = Path("ket_qua_benchmark.txt")
 
 BENCHMARK_CASES = [
     {
-        "query": "Hai bên thương lượng tranh chấp trong bao lâu trước khi yêu cầu sàn can thiệp?",
-        "gold_doc_id": "buyer-dispute-resolution-policy",
-        "evidence_terms": ["24 giờ", "yêu cầu sàn can thiệp"],
-        "gold_answer": "Hai bên có 24 giờ thương lượng trước khi một bên yêu cầu sàn can thiệp.",
+        "query": "Các lý do liên quan đến sản phẩm gồm hư hỏng, bể vỡ, sai sản phẩm hoặc thiếu phụ kiện là gì?",
+        "gold_doc_id": "return-eligibility",
+        "evidence_terms": ["hư hỏng", "sai sản phẩm"],
+        "gold_answer": "Có thể yêu cầu khi hàng hư hỏng, sai hoặc thiếu hàng/phụ kiện, khác mô tả hay nghi là hàng giả/nhái.",
     },
     {
-        "query": "Thời hạn trả hàng của Shopee Mall và shop thường là bao nhiêu ngày?",
-        "gold_doc_id": "return-refund-policy",
-        "evidence_terms": ["7 ngày", "3 ngày"],
-        "gold_answer": "Shopee Mall là 7 ngày và shop thường là 3 ngày kể từ khi nhận hàng thành công.",
+        "query": "Đối với thực phẩm tươi sống hoặc đông lạnh, trừ lý do chưa nhận được hàng, thời hạn ngắn hơn là bao lâu?",
+        "gold_doc_id": "return-window",
+        "evidence_terms": ["thực phẩm tươi sống", "24 giờ"],
+        "gold_answer": "Thời hạn là 24 giờ kể từ khi đơn được cập nhật giao hàng thành công.",
     },
     {
-        "query": "Người bán tích lũy 12 điểm phạt trở lên sẽ chịu chế tài gì?",
-        "gold_doc_id": "seller-penalty-violation-policy",
-        "evidence_terms": ["12 điểm", "28 ngày"],
-        "gold_answer": "Gian hàng có thể bị khóa 28 ngày hoặc chấm dứt hợp tác vĩnh viễn.",
+        "query": "Khi nghi ngờ hàng giả, người mua nên cung cấp bằng chứng kỹ thuật nào?",
+        "gold_doc_id": "return-evidence",
+        "evidence_terms": ["mã qr", "số seri"],
+        "gold_answer": "Có thể cung cấp quá trình quét mã QR, kiểm tra số seri và đối chiếu bao bì với hàng chính hãng.",
     },
     {
-        "query": "Bên chịu trách nhiệm phải phản hồi yêu cầu hỗ trợ và xử lý trong thời hạn nào?",
-        "gold_doc_id": "seller-warranty-policy",
-        "evidence_terms": ["48 giờ làm việc", "14 ngày làm việc"],
-        "gold_answer": "Phản hồi trong 48 giờ làm việc và xử lý không quá 14 ngày làm việc.",
+        "query": "Tiền hoàn về thẻ tín dụng hoặc ghi nợ thường mất bao lâu?",
+        "gold_doc_id": "refund-methods-and-time",
+        "evidence_terms": ["thẻ tín dụng", "7–14 ngày làm việc"],
+        "gold_answer": "Thẻ tín dụng hoặc ghi nợ thường mất 7–14 ngày làm việc, tùy ngân hàng phát hành.",
+    },
+    {
+        "query": "Nếu người bán hoàn dưới 50% giá trị sản phẩm, Shopee có thể xử lý thế nào?",
+        "gold_doc_id": "seller-return-refund-obligations",
+        "evidence_terms": ["50%", "cấn trừ"],
+        "gold_answer": "Shopee có thể cấn trừ phần chênh lệch từ Số dư Tài khoản Shopee của người bán để trả người mua.",
         "metadata_filter": {"audience": "seller"},
-    },
-    {
-        "query": "Hạn mức hoàn cước tối đa cho đơn nội tỉnh và liên tỉnh là bao nhiêu?",
-        "gold_doc_id": "shipping-fee-refund-policy",
-        "evidence_terms": ["50.000 vnđ", "100.000 vnđ"],
-        "gold_answer": "Tối đa 50.000 VNĐ cho đơn nội tỉnh và 100.000 VNĐ cho đơn liên tỉnh.",
     },
 ]
 
@@ -243,7 +244,7 @@ def _result_line(rank: int, result: dict) -> str:
 def render_report(evaluations: list[dict]) -> str:
     lines = [
         "KẾT QUẢ BENCHMARK — CHÍNH SÁCH TRẢ HÀNG/HOÀN TIỀN SHOPEE",
-        "Corpus: 5 tài liệu thương mại điện tử do người dùng cung cấp tại data/ecommerce/",
+        "Corpus: 6 tài liệu Shopee đã crawl và chuẩn hóa tại data/shopee-return-refund/",
         "Embedding: lexical-hash-512 (deterministic, không phải mô hình ngữ nghĩa)",
         "Cách chấm: evidence ở top-1 = 2; top-2/3 = 1; vắng top-3 = 0",
         "",
