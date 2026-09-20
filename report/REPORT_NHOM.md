@@ -42,19 +42,19 @@ Các trang nguồn công khai đã được crawler kiểm tra `robots.txt` và 
 
 ## 2. Thiết kế chiến lược
 
-Ba chiến lược dùng cùng 6 tài liệu, 5 câu hỏi, lexical-hash embedding và cách chấm. Vì corpus nhỏ, thí nghiệm ưu tiên tính tái lập hơn chất lượng của mô hình neural.
+Ba chiến lược dùng cùng 6 tài liệu, 5 câu hỏi, Nemotron semantic embedding và cách chấm. API key chỉ được đọc từ `.env` đã Git-ignore. Document chunks được gửi theo batch; query embedding được cache trong một lần chạy. Lexical hashing vẫn là chế độ offline để tái lập khi không có API.
 
 | Cấu hình | Tham số | Số chunk | Độ dài TB | Điểm |
 |---|---|---:|---:|---:|
-| Fixed-size | size 450, overlap 80 | 21 | 389,76 | 8/10 |
-| Recursive | size 450, separator theo cấu trúc | 23 | 302,22 | 8/10 |
-| Heading-aware | mỗi heading gắn với section, max 700 | 27 | 257,15 | 8/10 |
+| Fixed-size | size 450, overlap 80 | 21 | 389,76 | 10/10 |
+| Recursive | size 450, separator theo cấu trúc | 23 | 302,22 | 9/10 |
+| Heading-aware | mỗi heading gắn với section, max 700 | 27 | 257,15 | 9/10 |
 
 - Fixed-size đơn giản, có overlap, nhưng có thể cắt giữa section.
 - Recursive tôn trọng đoạn/dòng tốt hơn, song vẫn phụ thuộc separator và giới hạn kích thước.
 - Heading-aware giữ nhãn mục cùng nội dung và thuận lợi cho trích dẫn; đổi lại tạo nhiều chunk ngắn, trong đó heading-only có thể cạnh tranh điểm với section thật.
 
-Ba chiến lược bằng điểm trên bộ câu hỏi này. Heading-aware được chọn làm cấu hình trình bày vì nguồn là Markdown có cấu trúc và kết quả dễ giải thích, không phải vì có điểm cao hơn.
+Fixed-size đạt điểm cao nhất trong bộ câu hỏi hiện tại nhờ overlap giữ các mốc thời gian liền nhau. Heading-aware vẫn được chọn làm cấu hình trình bày cá nhân vì nguồn là Markdown có cấu trúc và chunk dễ giải thích; kết quả cho thấy lựa chọn tốt nhất còn phụ thuộc cách đặt câu hỏi và cách chấm rank.
 
 ## 3. Câu hỏi và chất lượng truy xuất
 
@@ -70,33 +70,33 @@ Ba chiến lược bằng điểm trên bộ câu hỏi này. Heading-aware đư
 |---|---:|---:|---:|---|
 | Q1 | 2 | 2 | 2 | Đủ bằng chứng ở top-1 |
 | Q2 | 2 | 2 | 2 | Đủ bằng chứng ở top-1 |
-| Q3 | 0 | 0 | 0 | Đúng tài liệu nhưng section chứa QR/seri không vào top-3 |
-| Q4 | 2 | 2 | 2 | Đủ bằng chứng ở top-1 |
+| Q3 | 2 | 2 | 2 | Nemotron đưa bằng chứng QR/seri lên top-1 |
+| Q4 | 2 | 1 | 1 | Recursive/heading có bằng chứng ở rank 2 |
 | Q5 | 2 | 2 | 2 | Đủ bằng chứng ở top-1 |
-| **Tổng** | **8/10** | **8/10** | **8/10** | 4/5 câu đạt tối đa |
+| **Tổng** | **10/10** | **9/10** | **9/10** | Cả 5 câu đều có bằng chứng trong top-3 |
 
 ### Thử nghiệm metadata filter
 
 Q5 được chạy thêm với `audience=seller`. Với heading strategy:
 
-- Không lọc: `seller-return-refund-obligations`, `return-eligibility`, `return-shipping-and-packaging`.
+- Không lọc: `seller-return-refund-obligations`, `return-eligibility`, `seller-return-refund-obligations`.
 - Có lọc: cả ba vị trí đều thuộc `seller-return-refund-obligations`.
 
 Filter không thay đổi top-1 vì tài liệu đúng đã đứng đầu, nhưng loại hoàn toàn chunk buyer khỏi top-3. Điều này làm context đưa vào agent tập trung đúng đối tượng hơn và chứng minh filter được áp dụng trước ranking.
 
 ### Phân tích lỗi
 
-Q3 là failure thật của cả ba cấu hình. Lexical hashing đưa các chunk nói chung về “bằng chứng” lên cao, nhưng section có đồng thời “mã QR” và “số seri” không vào top-3. Cải tiến phù hợp là dùng embedding ngữ nghĩa tốt hơn, lexical/BM25 hybrid, tăng `top_k`, hoặc thêm reranker; không nên chỉ kết luận rằng chunking sai.
+Failure còn lại là Q4 của recursive và heading: chunk nói về Ví ShopeePay/tài khoản ngân hàng đứng trên chunk thẻ tín dụng do cùng chủ đề hoàn tiền, nên bằng chứng đúng chỉ ở rank 2. Có thể cải thiện bằng reranker hoặc query expansion; không nên chỉnh gold answer để làm đẹp điểm.
 
 ## 4. Demo và bài học
 
 Các điểm trình bày chính:
 
-1. Chạy `python -m pytest tests/ -v` để chứng minh 60 test pass.
+1. Chạy `python -m pytest tests/ -v` để chứng minh 65 test pass.
 2. Chạy `python bench.py` để tái tạo toàn bộ kết quả và file `ket_qua_benchmark.txt`.
-3. So sánh Q3 thất bại với Q5 filter thành công để thấy chunking, embedding và metadata giải quyết các phần khác nhau của retrieval.
+3. So sánh lexical baseline 8/10 với Nemotron 10/9/9 và Q5 filter để thấy embedding, chunking và metadata giải quyết các phần khác nhau của retrieval.
 
-Bài học lớn nhất là chiến lược chia chunk không thể bù hoàn toàn cho biểu diễn từ vựng yếu. Nếu làm lại, repository nên lưu cả raw snapshot và clean corpus có checksum, thêm benchmark nhiều cách diễn đạt hơn, và so sánh lexical baseline với một embedding tiếng Việt thực tế.
+Bài học lớn nhất là semantic embedding sửa được lỗi diễn đạt của Q3 nhưng không đảm bảo mọi bằng chứng đều lên rank 1. Nếu làm lại, repository nên thêm nhiều cách diễn đạt cho mỗi ý, lưu cache embedding không chứa bí mật và thử reranker trên top-k.
 
 ## 5. Tự đánh giá
 
@@ -104,6 +104,6 @@ Bài học lớn nhất là chiến lược chia chunk không thể bù hoàn to
 |---|---:|
 | Lựa chọn tài liệu | 10/10 |
 | Thiết kế chiến lược | 14/15 |
-| Chất lượng truy xuất | 8/10 |
+| Chất lượng truy xuất | 10/10 |
 | Thuyết trình/demo | 5/5 |
-| **Tổng** | **37/40** |
+| **Tổng** | **39/40** |

@@ -1,6 +1,6 @@
 KẾT QUẢ BENCHMARK — CHÍNH SÁCH TRẢ HÀNG/HOÀN TIỀN SHOPEE
 Corpus: 6 tài liệu Shopee đã crawl và chuẩn hóa tại data/shopee-return-refund/
-Embedding: lexical-hash-512 (deterministic, không phải mô hình ngữ nghĩa)
+Embedding: nvidia/nemotron-3-embed-1b:free
 Cách chấm: evidence ở top-1 = 2; top-2/3 = 1; vắng top-3 = 0
 
 === Chiến lược: fixed_size ===
@@ -9,36 +9,36 @@ Số chunk: 21
 Q1: Các lý do liên quan đến sản phẩm gồm hư hỏng, bể vỡ, sai sản phẩm hoặc thiếu phụ kiện là gì?
   Gold: Có thể yêu cầu khi hàng hư hỏng, sai hoặc thiếu hàng/phụ kiện, khác mô tả hay nghi là hàng giả/nhái.
   Evidence rank: 1 | Điểm: 2/2
-    1. score=0.4552 doc_id=return-eligibility | yêu cầu Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày giao dự kiến đối với đơn trả trư
-    2. score=0.3777 doc_id=return-shipping-and-packaging | # Đóng gói và gửi trả sản phẩm ## Thành phần phải hoàn trả Người mua cần hoàn trả sản phẩm cùng hộp của nhà sản xuất, giấy tờ, phụ kiện và quà tặng kè
-    3. score=0.3337 doc_id=return-evidence | n phẩm. Với khiếu nại thiếu hàng hoặc sai hàng, cần thể hiện các sản phẩm và phụ kiện thực tế trong kiện. Với hàng hư hỏng hoặc khác mô tả, cần quay/c
+    1. score=0.5272 doc_id=return-eligibility | yêu cầu Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày giao dự kiến đối với đơn trả trư
+    2. score=0.4460 doc_id=return-evidence | n phẩm. Với khiếu nại thiếu hàng hoặc sai hàng, cần thể hiện các sản phẩm và phụ kiện thực tế trong kiện. Với hàng hư hỏng hoặc khác mô tả, cần quay/c
+    3. score=0.3640 doc_id=return-shipping-and-packaging | # Đóng gói và gửi trả sản phẩm ## Thành phần phải hoàn trả Người mua cần hoàn trả sản phẩm cùng hộp của nhà sản xuất, giấy tờ, phụ kiện và quà tặng kè
 Q2: Đối với thực phẩm tươi sống hoặc đông lạnh, trừ lý do chưa nhận được hàng, thời hạn ngắn hơn là bao lâu?
   Gold: Thời hạn là 24 giờ kể từ khi đơn được cập nhật giao hàng thành công.
   Evidence rank: 1 | Điểm: 2/2
-    1. score=0.5660 doc_id=return-window | thời hạn là 15 ngày kể từ khi người mua bấm “Đã nhận được hàng”. Nếu người mua không bấm xác nhận, mốc tiếp nhận có thể kéo dài đến 20 ngày kể từ khi 
-    2. score=0.2945 doc_id=return-eligibility | yêu cầu Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày giao dự kiến đối với đơn trả trư
-    3. score=0.2925 doc_id=return-window | # Thời hạn gửi yêu cầu ## Đơn hàng thông thường Đối với phần lớn đơn hàng, người mua có tối đa **15 ngày** kể từ khi đơn được cập nhật trạng thái “Gia
+    1. score=0.7194 doc_id=return-window | thời hạn là 15 ngày kể từ khi người mua bấm “Đã nhận được hàng”. Nếu người mua không bấm xác nhận, mốc tiếp nhận có thể kéo dài đến 20 ngày kể từ khi
+    2. score=0.4110 doc_id=return-window | # Thời hạn gửi yêu cầu ## Đơn hàng thông thường Đối với phần lớn đơn hàng, người mua có tối đa **15 ngày** kể từ khi đơn được cập nhật trạng thái “Gia
+    3. score=0.3524 doc_id=return-eligibility | yêu cầu Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày giao dự kiến đối với đơn trả trư
 Q3: Khi nghi ngờ hàng giả, người mua nên cung cấp bằng chứng kỹ thuật nào?
   Gold: Có thể cung cấp quá trình quét mã QR, kiểm tra số seri và đối chiếu bao bì với hàng chính hãng.
-  Evidence rank: không có | Điểm: 0/2
-    1. score=0.3358 doc_id=return-evidence | # Chuẩn bị bằng chứng ## Mục đích Bằng chứng đầy đủ và rõ ràng giúp Shopee đối chiếu tình trạng thực nhận với thông tin đăng bán. Người mua nên cung c
-    2. score=0.2864 doc_id=return-shipping-and-packaging | hopee cung cấp lên lớp bao bì vận chuyển. Mã vận đơn được xem trong mục Trả hàng/Hoàn tiền của đơn liên quan. Nếu chọn tự sắp xếp vận chuyển, người mu
-    3. score=0.2139 doc_id=return-evidence | hận và bao bì chính hãng. Video mở hộp liên tục giúp chứng minh tình trạng kiện hàng từ trước khi mở đến khi kiểm tra sản phẩm. ## Yêu cầu về chất lượ
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.4642 doc_id=return-evidence | n phẩm. Với khiếu nại thiếu hàng hoặc sai hàng, cần thể hiện các sản phẩm và phụ kiện thực tế trong kiện. Với hàng hư hỏng hoặc khác mô tả, cần quay/c
+    2. score=0.3660 doc_id=return-evidence | # Chuẩn bị bằng chứng ## Mục đích Bằng chứng đầy đủ và rõ ràng giúp Shopee đối chiếu tình trạng thực nhận với thông tin đăng bán. Người mua nên cung c
+    3. score=0.3590 doc_id=return-evidence | hận và bao bì chính hãng. Video mở hộp liên tục giúp chứng minh tình trạng kiện hàng từ trước khi mở đến khi kiểm tra sản phẩm. ## Yêu cầu về chất lượ
 Q4: Tiền hoàn về thẻ tín dụng hoặc ghi nợ thường mất bao lâu?
   Gold: Thẻ tín dụng hoặc ghi nợ thường mất 7–14 ngày làm việc, tùy ngân hàng phát hành.
   Evidence rank: 1 | Điểm: 2/2
-    1. score=0.3070 doc_id=refund-methods-and-time | kết với Shopee, thời gian dự kiến là **2 ngày làm việc** tùy ngân hàng. Khoản thanh toán qua ứng dụng ngân hàng có thể mất **7 ngày làm việc** để trở 
-    2. score=0.2969 doc_id=refund-methods-and-time | # Phương thức và thời gian nhận tiền hoàn Thời gian được tính sau khi Shopee chấp nhận hoàn tiền và phụ thuộc phương thức thanh toán ban đầu hoặc kênh
-    3. score=0.1955 doc_id=return-eligibility | c loại sản phẩm và điều kiện đang áp dụng. Một số nhóm hàng có tính đặc thù hoặc được ghi chú hạn chế trả hàng có thể không được xử lý theo cơ chế thô
+    1. score=0.4377 doc_id=refund-methods-and-time | kết với Shopee, thời gian dự kiến là **2 ngày làm việc** tùy ngân hàng. Khoản thanh toán qua ứng dụng ngân hàng có thể mất **7 ngày làm việc** để trở
+    2. score=0.3413 doc_id=refund-methods-and-time | # Phương thức và thời gian nhận tiền hoàn Thời gian được tính sau khi Shopee chấp nhận hoàn tiền và phụ thuộc phương thức thanh toán ban đầu hoặc kênh
+    3. score=0.2859 doc_id=refund-methods-and-time | **, tùy ngân hàng phát hành. ## SPayLater Khoản hoàn liên quan đến SPayLater có thể được cập nhật trong mục giao dịch trong khoảng **24 giờ**. Khi gia
 Q5: Nếu người bán hoàn dưới 50% giá trị sản phẩm, Shopee có thể xử lý thế nào?
   Gold: Shopee có thể cấn trừ phần chênh lệch từ Số dư Tài khoản Shopee của người bán để trả người mua.
   Evidence rank: 1 | Điểm: 2/2
-    1. score=0.4519 doc_id=seller-return-refund-obligations | u rằng nếu người mua khiếu nại việc người bán hoàn dưới 50% giá trị sản phẩm hoàn trả, Shopee có thể cấn trừ phần chênh lệch từ Số dư Tài khoản Shopee
-    2. score=0.4118 doc_id=seller-return-refund-obligations | phẩm hoàn trả cần được đối chiếu với tình trạng ban đầu, phụ kiện đi kèm, hóa đơn thuế, tem hoặc phiếu bảo hành nếu có. Bao bì và sản phẩm cần được xe
-    3. score=0.2890 doc_id=seller-return-refund-obligations | # Nghĩa vụ của người bán ## Phối hợp giải quyết yêu cầu Người bán cần phối hợp cung cấp thông tin và xử lý yêu cầu Trả hàng/Hoàn tiền trên hệ thống. S
-Tổng điểm: 8/10
+    1. score=0.7020 doc_id=seller-return-refund-obligations | u rằng nếu người mua khiếu nại việc người bán hoàn dưới 50% giá trị sản phẩm hoàn trả, Shopee có thể cấn trừ phần chênh lệch từ Số dư Tài khoản Shopee
+    2. score=0.5707 doc_id=seller-return-refund-obligations | phẩm hoàn trả cần được đối chiếu với tình trạng ban đầu, phụ kiện đi kèm, hóa đơn thuế, tem hoặc phiếu bảo hành nếu có. Bao bì và sản phẩm cần được xe
+    3. score=0.5460 doc_id=seller-return-refund-obligations | # Nghĩa vụ của người bán ## Phối hợp giải quyết yêu cầu Người bán cần phối hợp cung cấp thông tin và xử lý yêu cầu Trả hàng/Hoàn tiền trên hệ thống. S
+Tổng điểm: 10/10
 A/B metadata filter (audience=seller):
-  Không lọc: seller-return-refund-obligations, seller-return-refund-obligations, return-eligibility
+  Không lọc: seller-return-refund-obligations, seller-return-refund-obligations, seller-return-refund-obligations
   Có lọc: seller-return-refund-obligations, seller-return-refund-obligations, seller-return-refund-obligations
 
 === Chiến lược: recursive ===
@@ -47,36 +47,36 @@ Số chunk: 23
 Q1: Các lý do liên quan đến sản phẩm gồm hư hỏng, bể vỡ, sai sản phẩm hoặc thiếu phụ kiện là gì?
   Gold: Có thể yêu cầu khi hàng hư hỏng, sai hoặc thiếu hàng/phụ kiện, khác mô tả hay nghi là hàng giả/nhái.
   Evidence rank: 1 | Điểm: 2/2
-    1. score=0.5026 doc_id=return-eligibility | Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày giao dự kiến đối với đơn trả trước. Các 
-    2. score=0.3774 doc_id=return-evidence | Ảnh hoặc video nên cho thấy toàn cảnh kiện hàng, tem vận chuyển, bao bì và tình trạng sản phẩm. Với khiếu nại thiếu hàng hoặc sai hàng, cần thể hiện c
-    3. score=0.3581 doc_id=return-shipping-and-packaging | # Đóng gói và gửi trả sản phẩm ## Thành phần phải hoàn trả Người mua cần hoàn trả sản phẩm cùng hộp của nhà sản xuất, giấy tờ, phụ kiện và quà tặng kè
+    1. score=0.5760 doc_id=return-eligibility | Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày giao dự kiến đối với đơn trả trước. Các
+    2. score=0.4548 doc_id=return-evidence | Ảnh hoặc video nên cho thấy toàn cảnh kiện hàng, tem vận chuyển, bao bì và tình trạng sản phẩm. Với khiếu nại thiếu hàng hoặc sai hàng, cần thể hiện c
+    3. score=0.3723 doc_id=seller-return-refund-obligations | Sản phẩm hoàn trả cần được đối chiếu với tình trạng ban đầu, phụ kiện đi kèm, hóa đơn thuế, tem hoặc phiếu bảo hành nếu có. Bao bì và sản phẩm cần đượ
 Q2: Đối với thực phẩm tươi sống hoặc đông lạnh, trừ lý do chưa nhận được hàng, thời hạn ngắn hơn là bao lâu?
   Gold: Thời hạn là 24 giờ kể từ khi đơn được cập nhật giao hàng thành công.
   Evidence rank: 1 | Điểm: 2/2
-    1. score=0.5779 doc_id=return-window | Với đơn do người bán tự vận chuyển, thời hạn là 15 ngày kể từ khi người mua bấm “Đã nhận được hàng”. Nếu người mua không bấm xác nhận, mốc tiếp nhận c
-    2. score=0.3209 doc_id=return-eligibility | Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày giao dự kiến đối với đơn trả trước. Các 
-    3. score=0.2541 doc_id=return-window | # Thời hạn gửi yêu cầu ## Đơn hàng thông thường Đối với phần lớn đơn hàng, người mua có tối đa **15 ngày** kể từ khi đơn được cập nhật trạng thái “Gia
+    1. score=0.7262 doc_id=return-window | Với đơn do người bán tự vận chuyển, thời hạn là 15 ngày kể từ khi người mua bấm “Đã nhận được hàng”. Nếu người mua không bấm xác nhận, mốc tiếp nhận c
+    2. score=0.3905 doc_id=return-window | # Thời hạn gửi yêu cầu ## Đơn hàng thông thường Đối với phần lớn đơn hàng, người mua có tối đa **15 ngày** kể từ khi đơn được cập nhật trạng thái “Gia
+    3. score=0.3626 doc_id=return-eligibility | Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày giao dự kiến đối với đơn trả trước. Các
 Q3: Khi nghi ngờ hàng giả, người mua nên cung cấp bằng chứng kỹ thuật nào?
   Gold: Có thể cung cấp quá trình quét mã QR, kiểm tra số seri và đối chiếu bao bì với hàng chính hãng.
-  Evidence rank: không có | Điểm: 0/2
-    1. score=0.3578 doc_id=return-evidence | # Chuẩn bị bằng chứng ## Mục đích Bằng chứng đầy đủ và rõ ràng giúp Shopee đối chiếu tình trạng thực nhận với thông tin đăng bán. Người mua nên cung c
-    2. score=0.2635 doc_id=return-shipping-and-packaging | Với hình thức đơn vị vận chuyển đến lấy hoặc trả tại bưu cục, người mua in và dán phiếu gửi hàng hoặc viết mã vận đơn Shopee cung cấp lên lớp bao bì v
-    3. score=0.2128 doc_id=return-evidence | Bằng chứng cần đủ sáng, đọc được thông tin quan trọng và không che khuất lỗi. Nội dung tải lên phải liên quan trực tiếp đến đơn hàng đang khiếu nại. N
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.4376 doc_id=return-evidence | Khi nghi ngờ hàng không chính hãng, bằng chứng có thể gồm quá trình quét mã QR, kiểm tra số seri trên kênh của hãng, hoặc sự khác biệt giữa bao bì thự
+    2. score=0.3799 doc_id=return-evidence | # Chuẩn bị bằng chứng ## Mục đích Bằng chứng đầy đủ và rõ ràng giúp Shopee đối chiếu tình trạng thực nhận với thông tin đăng bán. Người mua nên cung c
+    3. score=0.3719 doc_id=return-evidence | Bằng chứng cần đủ sáng, đọc được thông tin quan trọng và không che khuất lỗi. Nội dung tải lên phải liên quan trực tiếp đến đơn hàng đang khiếu nại. N
 Q4: Tiền hoàn về thẻ tín dụng hoặc ghi nợ thường mất bao lâu?
   Gold: Thẻ tín dụng hoặc ghi nợ thường mất 7–14 ngày làm việc, tùy ngân hàng phát hành.
-  Evidence rank: 1 | Điểm: 2/2
-    1. score=0.4370 doc_id=refund-methods-and-time | Thẻ nội địa Napas thường nhận tiền trong **2–5 ngày làm việc**. Thẻ tín dụng hoặc ghi nợ, bao gồm thẻ liên kết Apple Pay hay Google Pay, thường cần **
-    2. score=0.2516 doc_id=refund-methods-and-time | Tiền hoàn về Ví ShopeePay thường được ghi nhận trong **24 giờ**, với điều kiện ví vẫn hoạt động bình thường. Nếu hoàn về tài khoản ngân hàng mặc định 
-    3. score=0.2330 doc_id=refund-methods-and-time | # Phương thức và thời gian nhận tiền hoàn Thời gian được tính sau khi Shopee chấp nhận hoàn tiền và phụ thuộc phương thức thanh toán ban đầu hoặc kênh
+  Evidence rank: 2 | Điểm: 1/2
+    1. score=0.4618 doc_id=refund-methods-and-time | Tiền hoàn về Ví ShopeePay thường được ghi nhận trong **24 giờ**, với điều kiện ví vẫn hoạt động bình thường. Nếu hoàn về tài khoản ngân hàng mặc định
+    2. score=0.3589 doc_id=refund-methods-and-time | Thẻ nội địa Napas thường nhận tiền trong **2–5 ngày làm việc**. Thẻ tín dụng hoặc ghi nợ, bao gồm thẻ liên kết Apple Pay hay Google Pay, thường cần **
+    3. score=0.3105 doc_id=refund-methods-and-time | Khoản hoàn liên quan đến SPayLater có thể được cập nhật trong mục giao dịch trong khoảng **24 giờ**. Khi giao dịch trả góp đã được ghi nhận, người mua
 Q5: Nếu người bán hoàn dưới 50% giá trị sản phẩm, Shopee có thể xử lý thế nào?
   Gold: Shopee có thể cấn trừ phần chênh lệch từ Số dư Tài khoản Shopee của người bán để trả người mua.
   Evidence rank: 1 | Điểm: 2/2
-    1. score=0.4891 doc_id=seller-return-refund-obligations | Khi có phương án hoàn tiền, người bán cần bảo đảm số tiền phù hợp với quyết định trên hệ thống. Chính sách nêu rằng nếu người mua khiếu nại việc người
-    2. score=0.2532 doc_id=seller-return-refund-obligations | # Nghĩa vụ của người bán ## Phối hợp giải quyết yêu cầu Người bán cần phối hợp cung cấp thông tin và xử lý yêu cầu Trả hàng/Hoàn tiền trên hệ thống. S
-    3. score=0.2407 doc_id=seller-return-refund-obligations | Sản phẩm hoàn trả cần được đối chiếu với tình trạng ban đầu, phụ kiện đi kèm, hóa đơn thuế, tem hoặc phiếu bảo hành nếu có. Bao bì và sản phẩm cần đượ
-Tổng điểm: 8/10
+    1. score=0.7033 doc_id=seller-return-refund-obligations | Khi có phương án hoàn tiền, người bán cần bảo đảm số tiền phù hợp với quyết định trên hệ thống. Chính sách nêu rằng nếu người mua khiếu nại việc người
+    2. score=0.5324 doc_id=seller-return-refund-obligations | # Nghĩa vụ của người bán ## Phối hợp giải quyết yêu cầu Người bán cần phối hợp cung cấp thông tin và xử lý yêu cầu Trả hàng/Hoàn tiền trên hệ thống. S
+    3. score=0.5101 doc_id=seller-return-refund-obligations | Trong trường hợp người mua tự sắp xếp vận chuyển và đáp ứng điều kiện hỗ trợ, chi phí gửi trả có thể được Shopee hoàn theo cơ chế quy định. Người bán
+Tổng điểm: 9/10
 A/B metadata filter (audience=seller):
-  Không lọc: seller-return-refund-obligations, return-eligibility, return-shipping-and-packaging
+  Không lọc: seller-return-refund-obligations, seller-return-refund-obligations, return-eligibility
   Có lọc: seller-return-refund-obligations, seller-return-refund-obligations, seller-return-refund-obligations
 
 === Chiến lược: heading ===
@@ -85,37 +85,37 @@ Số chunk: 27
 Q1: Các lý do liên quan đến sản phẩm gồm hư hỏng, bể vỡ, sai sản phẩm hoặc thiếu phụ kiện là gì?
   Gold: Có thể yêu cầu khi hàng hư hỏng, sai hoặc thiếu hàng/phụ kiện, khác mô tả hay nghi là hàng giả/nhái.
   Evidence rank: 1 | Điểm: 2/2
-    1. score=0.4338 doc_id=return-eligibility | ## Những tình huống có thể gửi yêu cầu Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày g
-    2. score=0.4082 doc_id=return-shipping-and-packaging | # Đóng gói và gửi trả sản phẩm
-    3. score=0.3512 doc_id=seller-return-refund-obligations | ## Kiểm tra sản phẩm hoàn trả Sản phẩm hoàn trả cần được đối chiếu với tình trạng ban đầu, phụ kiện đi kèm, hóa đơn thuế, tem hoặc phiếu bảo hành nếu 
+    1. score=0.5043 doc_id=return-eligibility | ## Những tình huống có thể gửi yêu cầu Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày g
+    2. score=0.4149 doc_id=return-evidence | ## Nội dung nên ghi nhận Ảnh hoặc video nên cho thấy toàn cảnh kiện hàng, tem vận chuyển, bao bì và tình trạng sản phẩm. Với khiếu nại thiếu hàng hoặc
+    3. score=0.3625 doc_id=seller-return-refund-obligations | ## Kiểm tra sản phẩm hoàn trả Sản phẩm hoàn trả cần được đối chiếu với tình trạng ban đầu, phụ kiện đi kèm, hóa đơn thuế, tem hoặc phiếu bảo hành nếu
 Q2: Đối với thực phẩm tươi sống hoặc đông lạnh, trừ lý do chưa nhận được hàng, thời hạn ngắn hơn là bao lâu?
   Gold: Thời hạn là 24 giờ kể từ khi đơn được cập nhật giao hàng thành công.
   Evidence rank: 1 | Điểm: 2/2
-    1. score=0.7329 doc_id=return-window | ## Thực phẩm tươi sống và đông lạnh Đối với thực phẩm tươi sống hoặc đông lạnh, trừ lý do chưa nhận được hàng, thời hạn gửi yêu cầu ngắn hơn: **24 giờ
-    2. score=0.3200 doc_id=return-eligibility | ## Những tình huống có thể gửi yêu cầu Người mua có thể gửi yêu cầu khi chưa nhận được hàng dù hệ thống đã cập nhật giao thành công hoặc đã quá ngày g
-    3. score=0.2650 doc_id=return-evidence | ## Nội dung nên ghi nhận Ảnh hoặc video nên cho thấy toàn cảnh kiện hàng, tem vận chuyển, bao bì và tình trạng sản phẩm. Với khiếu nại thiếu hàng hoặc
+    1. score=0.6940 doc_id=return-window | ## Thực phẩm tươi sống và đông lạnh Đối với thực phẩm tươi sống hoặc đông lạnh, trừ lý do chưa nhận được hàng, thời hạn gửi yêu cầu ngắn hơn: **24 giờ
+    2. score=0.3914 doc_id=return-window | ## Người bán tự vận chuyển Với đơn do người bán tự vận chuyển, thời hạn là 15 ngày kể từ khi người mua bấm “Đã nhận được hàng”. Nếu người mua không bấ
+    3. score=0.3769 doc_id=return-window | ## Đơn hàng thông thường Đối với phần lớn đơn hàng, người mua có tối đa **15 ngày** kể từ khi đơn được cập nhật trạng thái “Giao hàng thành công” để g
 Q3: Khi nghi ngờ hàng giả, người mua nên cung cấp bằng chứng kỹ thuật nào?
   Gold: Có thể cung cấp quá trình quét mã QR, kiểm tra số seri và đối chiếu bao bì với hàng chính hãng.
-  Evidence rank: không có | Điểm: 0/2
-    1. score=0.2981 doc_id=return-evidence | ## Mục đích Bằng chứng đầy đủ và rõ ràng giúp Shopee đối chiếu tình trạng thực nhận với thông tin đăng bán. Người mua nên cung cấp ảnh hoặc video thể 
-    2. score=0.2582 doc_id=return-evidence | # Chuẩn bị bằng chứng
-    3. score=0.2490 doc_id=return-shipping-and-packaging | ## Thông tin gửi trả Với hình thức đơn vị vận chuyển đến lấy hoặc trả tại bưu cục, người mua in và dán phiếu gửi hàng hoặc viết mã vận đơn Shopee cung
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.4317 doc_id=return-evidence | ## Nội dung nên ghi nhận Ảnh hoặc video nên cho thấy toàn cảnh kiện hàng, tem vận chuyển, bao bì và tình trạng sản phẩm. Với khiếu nại thiếu hàng hoặc
+    2. score=0.3554 doc_id=return-evidence | ## Mục đích Bằng chứng đầy đủ và rõ ràng giúp Shopee đối chiếu tình trạng thực nhận với thông tin đăng bán. Người mua nên cung cấp ảnh hoặc video thể
+    3. score=0.3195 doc_id=return-evidence | ## Yêu cầu về chất lượng Bằng chứng cần đủ sáng, đọc được thông tin quan trọng và không che khuất lỗi. Nội dung tải lên phải liên quan trực tiếp đến đ
 Q4: Tiền hoàn về thẻ tín dụng hoặc ghi nợ thường mất bao lâu?
   Gold: Thẻ tín dụng hoặc ghi nợ thường mất 7–14 ngày làm việc, tùy ngân hàng phát hành.
-  Evidence rank: 1 | Điểm: 2/2
-    1. score=0.4438 doc_id=refund-methods-and-time | ## Thẻ thanh toán Thẻ nội địa Napas thường nhận tiền trong **2–5 ngày làm việc**. Thẻ tín dụng hoặc ghi nợ, bao gồm thẻ liên kết Apple Pay hay Google 
-    2. score=0.2774 doc_id=return-eligibility | # Điều kiện yêu cầu trả hàng hoặc hoàn tiền
-    3. score=0.2427 doc_id=refund-methods-and-time | # Phương thức và thời gian nhận tiền hoàn Thời gian được tính sau khi Shopee chấp nhận hoàn tiền và phụ thuộc phương thức thanh toán ban đầu hoặc kênh
+  Evidence rank: 2 | Điểm: 1/2
+    1. score=0.4088 doc_id=refund-methods-and-time | ## Ví và tài khoản ngân hàng Tiền hoàn về Ví ShopeePay thường được ghi nhận trong **24 giờ**, với điều kiện ví vẫn hoạt động bình thường. Nếu hoàn về
+    2. score=0.3564 doc_id=refund-methods-and-time | ## Thẻ thanh toán Thẻ nội địa Napas thường nhận tiền trong **2–5 ngày làm việc**. Thẻ tín dụng hoặc ghi nợ, bao gồm thẻ liên kết Apple Pay hay Google
+    3. score=0.2830 doc_id=refund-methods-and-time | ## SPayLater Khoản hoàn liên quan đến SPayLater có thể được cập nhật trong mục giao dịch trong khoảng **24 giờ**. Khi giao dịch trả góp đã được ghi nh
 Q5: Nếu người bán hoàn dưới 50% giá trị sản phẩm, Shopee có thể xử lý thế nào?
   Gold: Shopee có thể cấn trừ phần chênh lệch từ Số dư Tài khoản Shopee của người bán để trả người mua.
   Evidence rank: 1 | Điểm: 2/2
-    1. score=0.4931 doc_id=seller-return-refund-obligations | ## Số tiền hoàn Khi có phương án hoàn tiền, người bán cần bảo đảm số tiền phù hợp với quyết định trên hệ thống. Chính sách nêu rằng nếu người mua khiế
-    2. score=0.2782 doc_id=seller-return-refund-obligations | ## Kiểm tra sản phẩm hoàn trả Sản phẩm hoàn trả cần được đối chiếu với tình trạng ban đầu, phụ kiện đi kèm, hóa đơn thuế, tem hoặc phiếu bảo hành nếu 
-    3. score=0.2169 doc_id=seller-return-refund-obligations | # Nghĩa vụ của người bán
-Tổng điểm: 8/10
+    1. score=0.7025 doc_id=seller-return-refund-obligations | ## Số tiền hoàn Khi có phương án hoàn tiền, người bán cần bảo đảm số tiền phù hợp với quyết định trên hệ thống. Chính sách nêu rằng nếu người mua khiế
+    2. score=0.4910 doc_id=seller-return-refund-obligations | ## Phối hợp giải quyết yêu cầu Người bán cần phối hợp cung cấp thông tin và xử lý yêu cầu Trả hàng/Hoàn tiền trên hệ thống. Shopee có quyền xem xét bằ
+    3. score=0.4657 doc_id=seller-return-refund-obligations | ## Chi phí vận chuyển trả hàng Trong trường hợp người mua tự sắp xếp vận chuyển và đáp ứng điều kiện hỗ trợ, chi phí gửi trả có thể được Shopee hoàn t
+Tổng điểm: 9/10
 A/B metadata filter (audience=seller):
-  Không lọc: seller-return-refund-obligations, return-eligibility, return-shipping-and-packaging
+  Không lọc: seller-return-refund-obligations, return-eligibility, seller-return-refund-obligations
   Có lọc: seller-return-refund-obligations, seller-return-refund-obligations, seller-return-refund-obligations
 
 === Phân tích lỗi/rủi ro ===
-Failure thật: fixed_size Q3 chỉ đạt 0/2; lexical hashing ưu tiên từ trùng lặp và có thể xếp chunk cùng chủ đề nhưng thiếu đủ bằng chứng lên cao.
+Failure thật: recursive Q4 chỉ đạt 1/2; embedding backend có thể xếp chunk cùng chủ đề nhưng thiếu đủ bằng chứng lên cao.

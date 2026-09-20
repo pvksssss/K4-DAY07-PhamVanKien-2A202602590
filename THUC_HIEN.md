@@ -106,3 +106,15 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] `python bench.py` → exit 0, tái tạo `ket_qua_benchmark.txt`; ba chiến lược đều **8/10**.
 - [x] Scan `src/` không còn `TODO`, `NotImplementedError` hoặc bare `pass`; scan báo cáo không còn placeholder thực; `git diff --check` được làm sạch.
 - [x] Review thủ công do phiên làm việc không được tự tạo sub-agent khi người dùng chưa yêu cầu; không phát hiện lỗi nghiêm trọng hoặc quan trọng còn mở.
+
+### 2026-09-20 — Nâng cấp benchmark bằng Nemotron semantic embedding
+
+- [x] Người dùng cung cấp `OPENROUTER_API_KEY` qua `.env`; file được `.gitignore` bảo vệ và khóa không xuất hiện trong log hay Git.
+- [x] TDD RED: test batch/query interface thất bại vì store còn gọi từng text; test OpenRouter thất bại vì chưa có `OpenRouterEmbedder`; test chọn backend thất bại vì chưa có factory.
+- [x] Thêm `OpenRouterEmbedder` dùng model `nvidia/nemotron-3-embed-1b:free`, batch `search_document`, `search_query` riêng và cache nội bộ.
+- [x] Mở rộng `EmbeddingStore` dùng batch/query interface khi backend hỗ trợ, vẫn giữ fallback callable và toàn bộ API công khai.
+- [x] Focused GREEN ban đầu: **18 passed**; thêm regression cho output không có trailing whitespace và public package API.
+- [x] Lần chạy sandbox bị chặn socket đúng như dự kiến; lần chạy được cấp quyền gọi OpenRouter thành công mà không lộ key.
+- [x] Benchmark Nemotron cuối: fixed-size **10/10**, recursive **9/10**, heading **9/10**. Q3 được cải thiện từ 0 lên 2; Q4 của recursive/heading có bằng chứng đúng ở rank 2 nên đạt 1/2.
+- [x] Một lần pytest trong ngữ cảnh cấp quyền gặp setup error do ACL của thư mục temp dùng chung `pytest-of-ADMIN`; chạy đối chứng với basetemp trong workspace xác nhận đây là lỗi môi trường, không phải assertion code.
+- [x] Xác minh cuối sau mọi thay đổi: `python -m pytest tests/ -q --basetemp=.pytest-tmp -p no:cacheprovider` → **65 passed in 0.09s**; `main.py` exit 0; `git diff --check` sạch; `.env` được ignore và không được Git theo dõi.

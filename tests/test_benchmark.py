@@ -1,5 +1,9 @@
 import math
 
+import bench
+import src
+from src import embeddings
+
 from bench import (
     BENCHMARK_CASES,
     HeadingChunker,
@@ -56,3 +60,76 @@ def test_benchmark_defines_exactly_five_cases_and_one_filter_case():
         for case in BENCHMARK_CASES
     )
     assert any(case.get("metadata_filter") == {"audience": "seller"} for case in BENCHMARK_CASES)
+
+
+def test_openrouter_embedder_batches_documents_and_caches_queries():
+    assert hasattr(embeddings, "OpenRouterEmbedder")
+    OpenRouterEmbedder = embeddings.OpenRouterEmbedder
+    requests = []
+
+    def fake_transport(url, headers, payload, timeout):
+        requests.append((url, headers, payload, timeout))
+        inputs = payload["input"]
+        if isinstance(inputs, str):
+            inputs = [inputs]
+        return {
+            "object": "list",
+            "model": payload["model"],
+            "data": [
+                {
+                    "object": "embedding",
+                    "index": index,
+                    "embedding": [index + 1.0, 0.5],
+                }
+                for index, _ in enumerate(inputs)
+            ],
+            "usage": {"prompt_tokens": 1, "total_tokens": 1},
+        }
+
+    embedder = OpenRouterEmbedder(api_key="test-key", transport=fake_transport)
+
+    assert embedder.embed_documents(["doc one", "doc two"]) == [
+        [1.0, 0.5],
+        [2.0, 0.5],
+    ]
+    assert embedder.embed_query("question") == [1.0, 0.5]
+    assert embedder.embed_query("question") == [1.0, 0.5]
+
+    assert len(requests) == 2
+    assert requests[0][0] == "https://openrouter.ai/api/v1/embeddings"
+    assert requests[0][1]["Authorization"] == "Bearer test-key"
+    assert requests[0][2] == {
+        "model": "nvidia/nemotron-3-embed-1b:free",
+        "input": ["doc one", "doc two"],
+        "encoding_format": "float",
+        "input_type": "search_document",
+    }
+    assert requests[1][2]["input_type"] == "search_query"
+
+
+def test_benchmark_embedder_selection_is_explicit_and_key_safe():
+    assert hasattr(bench, "create_benchmark_embedder")
+    lexical = bench.create_benchmark_embedder(provider="lexical", api_key=None)
+    semantic = bench.create_benchmark_embedder(
+        provider="openrouter", api_key="test-key"
+    )
+
+    assert isinstance(lexical, LexicalHashEmbedder)
+    assert isinstance(semantic, embeddings.OpenRouterEmbedder)
+
+
+def test_benchmark_result_lines_do_not_end_with_whitespace():
+    line = bench._result_line(
+        1,
+        {
+            "score": 0.5,
+            "content": "x" * 149 + " " + "tail",
+            "metadata": {"doc_id": "policy"},
+        },
+    )
+
+    assert line == line.rstrip()
+
+
+def test_openrouter_embedder_is_available_from_public_package_api():
+    assert src.OpenRouterEmbedder is embeddings.OpenRouterEmbedder

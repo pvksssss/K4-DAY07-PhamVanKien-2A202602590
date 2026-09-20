@@ -4,7 +4,7 @@
 
 **Goal:** Produce a complete, evidence-backed Lab 07 submission with passing core code, a traceable Shopee Vietnam return-and-refund policy corpus, a reproducible five-query benchmark, and completed reports.
 
-**Architecture:** Keep the starter public APIs and implement the required behavior with a deterministic in-memory vector store. Build a separate benchmark pipeline that parses policy Markdown, applies three chunking strategies, ranks chunks with a dependency-free lexical hashing embedder, and writes evidence consumed by the reports and work log.
+**Architecture:** Keep the starter public APIs and implement the required behavior with a deterministic in-memory vector store. Build a separate benchmark pipeline that parses policy Markdown, applies three chunking strategies, ranks chunks with either a dependency-free lexical hashing fallback or OpenRouter Nemotron semantic embeddings, and writes evidence consumed by the reports and work log.
 
 **Tech Stack:** Python 3.11, pytest, standard library, python-dotenv, Markdown/YAML-style front matter, CSV.
 
@@ -303,7 +303,7 @@ git commit -m "data: add Shopee return and refund corpus"
 
 **Interfaces:**
 - Consumes: `data/shopee-return-refund/*.md`, `Document`, `EmbeddingStore`, `FixedSizeChunker`, and `RecursiveChunker`.
-- Produces: `parse_policy_file(path)`, `HeadingChunker.chunk(text)`, `LexicalHashEmbedder.__call__(text)`, benchmark result dictionaries, and deterministic text output.
+- Produces: `parse_policy_file(path)`, `HeadingChunker.chunk(text)`, `LexicalHashEmbedder.__call__(text)`, OpenRouter batch/query embedding support, benchmark result dictionaries, and text output labelled with the actual backend.
 
 - [ ] **Step 1: Add failing benchmark unit tests**
 

@@ -64,7 +64,7 @@ Three strategies will be evaluated on the same corpus and questions:
 - recursive structural chunks;
 - a heading/section-aware chunker designed for policy documents.
 
-The benchmark will use a dependency-free normalized lexical hashing embedder so retrieval reflects shared Vietnamese policy terms instead of the starter `MockEmbedder`'s random MD5-derived vectors. The implementation will be deterministic and clearly labelled as a local lexical baseline, not presented as a neural semantic model.
+The benchmark supports a dependency-free normalized lexical hashing fallback and an OpenRouter semantic backend. When `OPENROUTER_API_KEY` is available, it uses `nvidia/nemotron-3-embed-1b:free`, batches document chunks as `search_document`, embeds questions as `search_query`, and caches repeated queries within the run. Reports must label the backend actually used; secrets remain only in the Git-ignored `.env` file.
 
 Exactly five verifiable questions will be defined with gold evidence markers. At least one question will be run both with and without an `audience` metadata filter. Scoring will inspect retrieved chunk contents, not only `doc_id`: 2 points for answer evidence at rank 1, 1 point at rank 2 or 3, and 0 when evidence is absent. Output will include top-three chunks, scores, strategy totals, the filter A/B comparison, and one real failure analysis in `ket_qua_benchmark.txt`.
 

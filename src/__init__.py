@@ -11,10 +11,12 @@ from .embeddings import (
     GEMINI_EMBEDDING_MODEL,
     LOCAL_EMBEDDING_MODEL,
     OPENAI_EMBEDDING_MODEL,
+    OPENROUTER_EMBEDDING_MODEL,
     GeminiEmbedder,
     LocalEmbedder,
     MockEmbedder,
     OpenAIEmbedder,
+    OpenRouterEmbedder,
     _mock_embed,
 )
 from .models import Document
@@ -32,10 +34,12 @@ __all__ = [
     "MockEmbedder",
     "LocalEmbedder",
     "OpenAIEmbedder",
+    "OpenRouterEmbedder",
     "GeminiEmbedder",
     "_mock_embed",
     "LOCAL_EMBEDDING_MODEL",
     "OPENAI_EMBEDDING_MODEL",
+    "OPENROUTER_EMBEDDING_MODEL",
     "GEMINI_EMBEDDING_MODEL",
     "EMBEDDING_PROVIDER_ENV",
 ]

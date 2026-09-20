@@ -64,6 +64,37 @@ def test_filter_with_no_matches_returns_empty_list():
     )
 
 
+def test_store_uses_batch_document_and_query_embedding_interfaces():
+    class BatchEmbedder:
+        def __init__(self):
+            self.document_batches = []
+            self.queries = []
+
+        def __call__(self, text):
+            raise AssertionError("single-text fallback must not be used")
+
+        def embed_documents(self, texts):
+            self.document_batches.append(list(texts))
+            return [[1.0, 0.0], [0.0, 1.0]]
+
+        def embed_query(self, text):
+            self.queries.append(text)
+            return [1.0, 0.0]
+
+    embedder = BatchEmbedder()
+    store = EmbeddingStore(embedding_fn=embedder)
+    store.add_documents(
+        [Document("first", "alpha", {}), Document("second", "beta", {})]
+    )
+
+    assert [item["id"] for item in store.search("question", top_k=2)] == [
+        "first",
+        "second",
+    ]
+    assert embedder.document_batches == [["alpha", "beta"]]
+    assert embedder.queries == ["question"]
+
+
 def test_agent_does_not_call_llm_for_empty_store():
     calls = []
     agent = KnowledgeBaseAgent(

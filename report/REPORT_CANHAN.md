@@ -54,15 +54,15 @@ Agent lấy top-k chunk, tạo các khối ngữ cảnh đánh số `[1]`, `[2]`
 Lệnh: `python -m pytest tests/ -v`
 
 ```text
-collected 60 items
-tests/test_benchmark.py: 5 passed
-tests/test_regressions.py: 10 passed
+collected 65 items
+tests/test_benchmark.py: 9 passed
+tests/test_regressions.py: 11 passed
 tests/test_solution.py: 42 passed
 tests/test_submission_assets.py: 3 passed
-============================= 60 passed in 0.10s =============================
+============================= 65 passed in 0.09s =============================
 ```
 
-Kết quả: **60/60 test pass**, gồm đủ 42 test gốc và 18 test bổ sung.
+Kết quả: **65/65 test pass**, gồm đủ 42 test gốc và 23 test bổ sung.
 
 ## 4. Dự đoán độ tương tự
 
@@ -80,17 +80,17 @@ Trường hợp vector 0 đáng chú ý nhất: cosine theo công thức không 
 
 ## 5. Kết quả truy xuất cá nhân
 
-Chiến lược cá nhân chọn là heading/section-aware vì cấu trúc Markdown của chính sách có các mục độc lập. Backend benchmark là lexical hashing 512 chiều, deterministic, không phải mô hình embedding ngữ nghĩa.
+Chiến lược cá nhân chọn là heading/section-aware vì cấu trúc Markdown của chính sách có các mục độc lập. Benchmark cuối dùng `nvidia/nemotron-3-embed-1b:free` qua OpenRouter; tài liệu được embedding theo batch với `search_document`, còn câu hỏi dùng `search_query`. Lexical hashing vẫn được giữ làm chế độ offline.
 
 | # | Query | Top-1 | Score | Liên quan | Kết quả |
 |---|---|---|---:|---|---|
-| 1 | Các lý do liên quan đến sản phẩm gồm hư hỏng, bể vỡ, sai sản phẩm hoặc thiếu phụ kiện là gì? | `return-eligibility`, mục “Những tình huống có thể gửi yêu cầu” | 0.4338 | Có | 2/2 |
-| 2 | Thực phẩm tươi sống/đông lạnh có thời hạn ngắn hơn bao lâu? | `return-window`, mục thực phẩm tươi sống | 0.7329 | Có | 2/2 |
-| 3 | Nghi hàng giả cần bằng chứng kỹ thuật nào? | `return-evidence`, nhưng top-3 chưa chứa đủ QR và số seri | 0.2981 | Chưa đủ | 0/2 |
-| 4 | Hoàn tiền về thẻ tín dụng/ghi nợ mất bao lâu? | `refund-methods-and-time`, mục thẻ thanh toán | 0.4438 | Có | 2/2 |
-| 5 | Người bán hoàn dưới 50% thì Shopee xử lý thế nào? | `seller-return-refund-obligations`, mục số tiền hoàn | 0.4931 | Có | 2/2 |
+| 1 | Các lý do liên quan đến sản phẩm gồm hư hỏng, bể vỡ, sai sản phẩm hoặc thiếu phụ kiện là gì? | `return-eligibility`, mục “Những tình huống có thể gửi yêu cầu” | 0.5043 | Có | 2/2 |
+| 2 | Thực phẩm tươi sống/đông lạnh có thời hạn ngắn hơn bao lâu? | `return-window`, mục thực phẩm tươi sống | 0.6940 | Có | 2/2 |
+| 3 | Nghi hàng giả cần bằng chứng kỹ thuật nào? | `return-evidence`, mục nội dung nên ghi nhận | 0.4317 | Có | 2/2 |
+| 4 | Hoàn tiền về thẻ tín dụng/ghi nợ mất bao lâu? | Top-1 nói về ví/ngân hàng; chunk thẻ thanh toán ở rank 2 | 0.4088 | Có ở rank 2 | 1/2 |
+| 5 | Người bán hoàn dưới 50% thì Shopee xử lý thế nào? | `seller-return-refund-obligations`, mục số tiền hoàn | 0.7025 | Có | 2/2 |
 
-Có chunk đủ bằng chứng trong top-3 ở **4/5 câu**, tổng **8/10**. Câu 3 cho thấy truy xuất lexical có thể chọn đúng tài liệu nhưng sai section; heading chunking không tự giải quyết được khoảng cách ngữ nghĩa nếu query và nội dung dùng từ khác nhau.
+Có chunk đủ bằng chứng trong top-3 ở **5/5 câu**, tổng **9/10**. Nemotron sửa được failure Q3 của lexical baseline bằng cách đưa section chứa “mã QR” và “số seri” lên top-1. Q4 vẫn chỉ đạt 1 điểm vì chunk thẻ thanh toán nằm ở rank 2, sau chunk ví/tài khoản ngân hàng cùng tài liệu.
 
 ## 6. Tự đánh giá
 
@@ -100,5 +100,5 @@ Có chunk đủ bằng chứng trong top-3 ở **4/5 câu**, tổng **8/10**. C�
 | Hướng tiếp cận | 10/10 |
 | Hoàn thiện code | 30/30 |
 | Dự đoán độ tương tự | 5/5 |
-| Kết quả truy xuất | 8/10 |
-| **Tổng** | **58/60** |
+| Kết quả truy xuất | 9/10 |
+| **Tổng** | **59/60** |

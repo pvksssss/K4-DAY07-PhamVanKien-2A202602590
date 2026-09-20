@@ -27,7 +27,9 @@ class EmbeddingStore:
         self._collection = None
         self._next_index = 0
 
-    def _make_record(self, doc: Document) -> dict[str, Any]:
+    def _make_record(
+        self, doc: Document, embedding: list[float] | None = None
+    ) -> dict[str, Any]:
         metadata = dict(doc.metadata)
         metadata.setdefault("doc_id", doc.id)
         record_id = doc.id or f"{self._collection_name}-{self._next_index}"
@@ -36,14 +38,22 @@ class EmbeddingStore:
             "id": record_id,
             "content": doc.content,
             "metadata": metadata,
-            "embedding": list(self._embedding_fn(doc.content)),
+            "embedding": list(
+                embedding if embedding is not None else self._embedding_fn(doc.content)
+            ),
         }
+
+    def _embed_query(self, query: str) -> list[float]:
+        embed_query = getattr(self._embedding_fn, "embed_query", None)
+        if callable(embed_query):
+            return list(embed_query(query))
+        return list(self._embedding_fn(query))
 
     def _search_records(self, query: str, records: list[dict[str, Any]], top_k: int) -> list[dict[str, Any]]:
         if top_k <= 0 or not records:
             return []
 
-        query_embedding = self._embedding_fn(query)
+        query_embedding = self._embed_query(query)
         ranked = sorted(
             records,
             key=lambda record: _dot(query_embedding, record["embedding"]),
@@ -66,6 +76,18 @@ class EmbeddingStore:
         For ChromaDB: use collection.add(ids=[...], documents=[...], embeddings=[...])
         For in-memory: append dicts to self._store
         """
+        if not docs:
+            return
+        embed_documents = getattr(self._embedding_fn, "embed_documents", None)
+        if callable(embed_documents):
+            embeddings = embed_documents([doc.content for doc in docs])
+            if len(embeddings) != len(docs):
+                raise ValueError("embedding count does not match document count")
+            self._store.extend(
+                self._make_record(doc, embedding)
+                for doc, embedding in zip(docs, embeddings)
+            )
+            return
         self._store.extend(self._make_record(doc) for doc in docs)
 
     def search(self, query: str, top_k: int = 5) -> list[dict[str, Any]]:

@@ -105,6 +105,23 @@ PY
 export GEMINI_EMBEDDING_MODEL=gemini-embedding-001
 ```
 
+### 5) OpenRouter Nemotron cho benchmark
+
+Không cần cài thêm SDK. Đặt khóa trong file `.env` đã được Git ignore:
+
+```env
+OPENROUTER_API_KEY=sk-or-v1-...
+OPENROUTER_EMBEDDING_MODEL=nvidia/nemotron-3-embed-1b:free
+```
+
+Sau đó chạy:
+
+```bash
+python bench.py
+```
+
+Benchmark tự chọn OpenRouter khi có key, gửi document chunks theo batch và cache các query lặp lại. Muốn chạy baseline offline, đặt `BENCHMARK_EMBEDDING=lexical` trong môi trường hoặc `.env`.
+
 ### Quy tắc dự phòng (fallback)
 
 - Nếu không chọn gì, lab mặc định dùng `_mock_embed`

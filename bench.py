@@ -2,13 +2,17 @@ from __future__ import annotations
 
 import hashlib
 import math
+import os
 import re
 import unicodedata
 from pathlib import Path
 from typing import Protocol
 
+from dotenv import load_dotenv
+
 from main import configure_utf8_output
 from src import Document, EmbeddingStore, FixedSizeChunker, RecursiveChunker
+from src.embeddings import OpenRouterEmbedder
 
 
 CORPUS_FILES = [
@@ -128,6 +132,20 @@ class LexicalHashEmbedder:
         return [value / magnitude for value in vector]
 
 
+def create_benchmark_embedder(
+    provider: str | None = None, api_key: str | None = None
+):
+    selected = (provider or os.getenv("BENCHMARK_EMBEDDING", "auto")).strip().lower()
+    resolved_key = api_key if api_key is not None else os.getenv("OPENROUTER_API_KEY")
+    if selected == "lexical" or (selected == "auto" and not resolved_key):
+        return LexicalHashEmbedder()
+    if selected in {"auto", "openrouter"}:
+        return OpenRouterEmbedder(api_key=resolved_key)
+    raise ValueError(
+        "BENCHMARK_EMBEDDING must be one of: auto, lexical, openrouter"
+    )
+
+
 def build_chunk_documents(
     metadata: dict[str, str],
     body: str,
@@ -180,15 +198,17 @@ def evaluate_strategy(
     strategy_name: str,
     chunker: Chunker,
     corpus: list[tuple[dict[str, str], str]],
+    embedding_fn=None,
 ) -> dict:
     documents = [
         chunk
         for metadata, body in corpus
         for chunk in build_chunk_documents(metadata, body, strategy_name, chunker)
     ]
+    embedder = embedding_fn or LexicalHashEmbedder()
     store = EmbeddingStore(
         collection_name=f"benchmark-{strategy_name}",
-        embedding_fn=LexicalHashEmbedder(),
+        embedding_fn=embedder,
     )
     store.add_documents(documents)
 
@@ -217,6 +237,9 @@ def evaluate_strategy(
     )
     return {
         "name": strategy_name,
+        "embedding_backend": getattr(
+            embedder, "_backend_name", embedder.__class__.__name__
+        ),
         "chunk_count": len(documents),
         "avg_length": (
             sum(len(document.content) for document in documents) / len(documents)
@@ -234,7 +257,7 @@ def evaluate_strategy(
 
 
 def _result_line(rank: int, result: dict) -> str:
-    preview = " ".join(result["content"].split())[:150]
+    preview = " ".join(result["content"].split())[:150].rstrip()
     return (
         f"    {rank}. score={result['score']:.4f} "
         f"doc_id={result['metadata'].get('doc_id')} | {preview}"
@@ -245,7 +268,7 @@ def render_report(evaluations: list[dict]) -> str:
     lines = [
         "KẾT QUẢ BENCHMARK — CHÍNH SÁCH TRẢ HÀNG/HOÀN TIỀN SHOPEE",
         "Corpus: 6 tài liệu Shopee đã crawl và chuẩn hóa tại data/shopee-return-refund/",
-        "Embedding: lexical-hash-512 (deterministic, không phải mô hình ngữ nghĩa)",
+        f"Embedding: {evaluations[0]['embedding_backend']}",
         "Cách chấm: evidence ở top-1 = 2; top-2/3 = 1; vắng top-3 = 0",
         "",
     ]
@@ -297,7 +320,7 @@ def render_report(evaluations: list[dict]) -> str:
     if weakest[0] < 2:
         lines.append(
             f"Failure thật: {weakest[1]} Q{weakest[2]} chỉ đạt {weakest[0]}/2; "
-            "lexical hashing ưu tiên từ trùng lặp và có thể xếp chunk cùng chủ đề nhưng thiếu đủ bằng chứng lên cao."
+            "embedding backend có thể xếp chunk cùng chủ đề nhưng thiếu đủ bằng chứng lên cao."
         )
     else:
         lines.append(
@@ -307,15 +330,17 @@ def render_report(evaluations: list[dict]) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def run_benchmark() -> list[dict]:
+def run_benchmark(embedding_fn=None) -> list[dict]:
     corpus = load_corpus()
+    embedder = embedding_fn or create_benchmark_embedder()
     strategies: list[tuple[str, Chunker]] = [
         ("fixed_size", FixedSizeChunker(chunk_size=450, overlap=80)),
         ("recursive", RecursiveChunker(chunk_size=450)),
         ("heading", HeadingChunker(max_chars=700)),
     ]
     evaluations = [
-        evaluate_strategy(name, chunker, corpus) for name, chunker in strategies
+        evaluate_strategy(name, chunker, corpus, embedder)
+        for name, chunker in strategies
     ]
     OUTPUT_PATH.write_text(render_report(evaluations), encoding="utf-8")
     return evaluations
@@ -323,6 +348,7 @@ def run_benchmark() -> list[dict]:
 
 def main() -> int:
     configure_utf8_output()
+    load_dotenv(override=False)
     evaluations = run_benchmark()
     print(OUTPUT_PATH.read_text(encoding="utf-8"))
     return 0
