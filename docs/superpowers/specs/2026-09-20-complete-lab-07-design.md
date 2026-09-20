@@ -9,7 +9,7 @@ Turn the starter repository into a complete, reproducible Lab 07 submission for 
 The work covers four connected deliverables:
 
 1. Complete the public APIs in `src/chunking.py`, `src/store.py`, and `src/agent.py` without changing their existing signatures.
-2. Build a six-document Vietnamese corpus focused exclusively on Shopee Vietnam return and refund policies, derived from current public official Shopee pages, with buyer and seller audiences represented and one inventory row per document.
+2. Use the five user-provided Vietnamese e-commerce policy documents in `data/ecommerce/`, with buyer and seller audiences represented and one inventory row per document.
 3. Add a reproducible benchmark that compares fixed-size, recursive, and heading/section-aware chunking and records retrieval results for exactly five questions.
 4. Replace the report templates with an honest individual report and a repository-level experiment report. No unprovided teammate names or group participation claims will be invented.
 
@@ -39,7 +39,7 @@ Both `search()` and `search_with_filter()` will delegate ranking to the same hel
 
 ## Corpus and Provenance
 
-The corpus will live under `data/shopee-return-refund/` and contain six focused Markdown documents. Each document will be a concise Vietnamese paraphrase of a current official, publicly accessible Shopee Vietnam policy page rather than a long copied passage. The set will cover return eligibility, request windows, evidence requirements, return shipping and packaging, refund methods and timing, and seller return/refund obligations. Every document and benchmark question must remain within the single domain of Shopee return and refund policy.
+The final corpus consists of the five Markdown documents supplied by the user in `data/ecommerce/`: `buyer-dispute-resolution-policy.md`, `return-refund-policy.md`, `seller-penalty-violation-policy.md`, `seller-warranty-policy.md`, and `shipping-fee-refund-policy.md`. Their content and embedded source metadata are retained as supplied. The implementation does not represent those URLs as independently verified or re-crawled.
 
 Every file will have YAML front matter containing:
 
@@ -52,11 +52,11 @@ Every file will have YAML front matter containing:
 - `category`
 - `language: vi`
 
-`data/shopee-return-refund/sources.csv` will map one-to-one to the six Markdown files and record the public-source basis. Source discovery and verification will use official Shopee Vietnam pages only. If a selected page is inaccessible or disallows automated access, it will be replaced by another official public page rather than bypassed.
+`data/ecommerce_sources.csv` maps one-to-one to the five Markdown files and records `license_or_permission=user-provided`. The earlier six-document generated crawl corpus and its support CSV files are removed from the final tree at the user's request.
 
 ## Benchmark Design
 
-`bench.py` will parse YAML front matter from `data/shopee-return-refund/` without introducing a new required dependency, separate metadata from body text, create chunk-level `Document` objects, and retain the original `doc_id` in every chunk.
+`bench.py` will parse YAML front matter from the explicit five-file corpus list without introducing a new required dependency, separate metadata from body text, create chunk-level `Document` objects, and retain the original `doc_id` in every chunk.
 
 Three strategies will be evaluated on the same corpus and questions:
 
@@ -87,7 +87,7 @@ Final verification consists of:
 1. `pytest tests/ -v` with all tests passing.
 2. `python main.py "Chunking là gì?"` completing successfully.
 3. `python bench.py` regenerating `ket_qua_benchmark.txt` successfully.
-4. A corpus audit confirming six unique documents, required metadata, one-to-one `sources.csv`, and both buyer and seller audiences.
+4. A corpus audit confirming five unique documents, required metadata, one-to-one `data/ecommerce_sources.csv`, and both buyer and seller audiences.
 5. A repository scan confirming no remaining implementation `TODO` or `NotImplementedError` in `src/`, and no secrets or virtual-environment files tracked.
 
 ## Error Handling and Integrity

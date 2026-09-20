@@ -25,7 +25,7 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Ghi nhận baseline của bộ test.
 - [x] Hoàn thiện code lõi.
 - [x] Hoàn thiện corpus và kiểm tra provenance.
-- [ ] Chạy benchmark và sinh kết quả.
+- [x] Chạy benchmark và sinh kết quả.
 - [ ] Hoàn thiện báo cáo.
 - [ ] Chạy xác minh cuối cùng.
 
@@ -68,3 +68,23 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Làm sạch thành 6 tài liệu Markdown tập trung duy nhất vào chính sách đổi trả/hoàn tiền, không giữ menu/banner/nội dung ngoài chủ đề.
 - [x] Tạo `sources.csv` khớp một-một với tài liệu và ghi ngày truy xuất 2026-09-20.
 - [x] Corpus audit GREEN: **3 passed**; đủ metadata, 6 `doc_id` duy nhất, có cả `buyer` và `seller`, URL HTTPS chính thức của Shopee.
+
+### 2026-09-20 — Task 5: Benchmark retrieval
+
+- [x] Viết test trước cho parser front matter, heading chunker, lexical hashing, metadata chunk và đúng 5 benchmark cases.
+- [x] Xác nhận RED: test collection lỗi `ModuleNotFoundError: No module named 'bench'`.
+- [x] Triển khai `bench.py` với ba chiến lược: fixed-size, recursive và heading/section.
+- [x] Dùng lexical hashing chuẩn hóa, deterministic, không mô tả sai là neural semantic embedding.
+- [x] Unit test benchmark GREEN: **5 passed**.
+- [x] Sinh lại `ket_qua_benchmark.txt` trên 5 file người dùng cung cấp: fixed-size **8/10**, recursive **10/10**, heading **10/10**.
+- [x] A/B filter `audience=seller` loại các chunk buyer khỏi top-3 ở câu hỏi dành cho người bán.
+- [x] Failure case thật: fixed-size đạt 0/2 ở câu bảo hành người bán vì hai mốc `48 giờ làm việc` và `14 ngày làm việc` bị tách sang các chunk khác nhau.
+
+### 2026-09-20 — Điều chỉnh corpus theo yêu cầu người dùng
+
+- [x] Thay corpus cuối bằng đúng 5 file Markdown người dùng cung cấp trong `data/ecommerce/`: `buyer-dispute-resolution-policy.md`, `return-refund-policy.md`, `seller-penalty-violation-policy.md`, `seller-warranty-policy.md`, `shipping-fee-refund-policy.md`.
+- [x] Xóa 6 tài liệu Markdown đã crawl trước đó cùng 2 CSV hỗ trợ cũ trong `data/shopee-return-refund/`; các file vẫn có thể khôi phục từ commit `33d2e50`.
+- [x] Tạo `data/ecommerce_sources.csv` ánh xạ một-một và ghi rõ `license_or_permission=user-provided`; không tuyên bố đã xác minh độc lập các URL có sẵn trong front matter.
+- [x] Xác nhận RED có chủ đích khi tạm thiếu manifest: **1 failed, 2 passed**.
+- [x] Corpus audit và benchmark unit test sau thay thế: **8 passed**.
+- [x] Chạy lại benchmark thành công với kết quả fixed-size **8/10**, recursive **10/10**, heading **10/10**; A/B `audience=seller` loại tài liệu buyer khỏi top-3.

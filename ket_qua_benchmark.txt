@@ -1,0 +1,121 @@
+KẾT QUẢ BENCHMARK — CHÍNH SÁCH TRẢ HÀNG/HOÀN TIỀN SHOPEE
+Corpus: 5 tài liệu thương mại điện tử do người dùng cung cấp tại data/
+Embedding: lexical-hash-512 (deterministic, không phải mô hình ngữ nghĩa)
+Cách chấm: evidence ở top-1 = 2; top-2/3 = 1; vắng top-3 = 0
+
+=== Chiến lược: fixed_size ===
+Số chunk: 12
+Độ dài trung bình: 400.83
+Q1: Hai bên thương lượng tranh chấp trong bao lâu trước khi yêu cầu sàn can thiệp?
+  Gold: Hai bên có 24 giờ thương lượng trước khi một bên yêu cầu sàn can thiệp.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.4544 doc_id=buyer-dispute-resolution-policy | # Quy trình giải quyết tranh chấp giữa Người mua và Người bán ## 1. Giai đoạn thương lượng trực tiếp Khi phát sinh khiếu nại, Người mua và Người bán c
+    2. score=0.3889 doc_id=buyer-dispute-resolution-policy | hai bên có quyền nhấn nút **"Yêu cầu Sàn can thiệp"**. Bộ phận Tranh chấp của Sàn sẽ: - Yêu cầu Người mua cung cấp bằng chứng video unboxing và ảnh ch
+    3. score=0.0990 doc_id=seller-penalty-violation-policy | # Quy định xử phạt vi phạm dành cho Người bán ## 1. Các hành vi vi phạm nghiêm trọng - Đăng bán hàng giả, hàng nhái, hàng vi phạm bản quyền thương hiệ
+Q2: Thời hạn trả hàng của Shopee Mall và shop thường là bao nhiêu ngày?
+  Gold: Shopee Mall là 7 ngày và shop thường là 3 ngày kể từ khi nhận hàng thành công.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.3329 doc_id=return-refund-policy | # Chính sách đổi trả và hoàn tiền dành cho Người mua ## 1. Điều kiện đổi trả hàng Người mua có quyền gửi yêu cầu trả hàng và hoàn tiền trong vòng **7 
+    2. score=0.2376 doc_id=seller-warranty-policy | ữa có phí sau khi thỏa thuận và được sự đồng ý của người mua. ## 3. Chế tài đối với Người bán vi phạm - Từ chối bảo hành hợp lệ mà không có lý do chín
+    3. score=0.1932 doc_id=shipping-fee-refund-policy | tự thanh toán chi phí cước vận chuyển 2 chiều cho đơn vị giao vận. ## 2. Hạn mức hỗ trợ cước vận chuyển - Hạn mức hoàn cước tối đa hỗ trợ cho một đơn 
+Q3: Người bán tích lũy 12 điểm phạt trở lên sẽ chịu chế tài gì?
+  Gold: Gian hàng có thể bị khóa 28 ngày hoặc chấm dứt hợp tác vĩnh viễn.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.4174 doc_id=seller-penalty-violation-policy | % trong tuần)**: Cộng 2 điểm phạt Sao Quả Tạ. - **Đăng bán sản phẩm cấm**: Cộng 4 điểm phạt và xóa vĩnh viễn sản phẩm vi phạm. - **Tích lũy từ 6 điểm 
+    2. score=0.3181 doc_id=seller-penalty-violation-policy | # Quy định xử phạt vi phạm dành cho Người bán ## 1. Các hành vi vi phạm nghiêm trọng - Đăng bán hàng giả, hàng nhái, hàng vi phạm bản quyền thương hiệ
+    3. score=0.2037 doc_id=seller-warranty-policy | ữa có phí sau khi thỏa thuận và được sự đồng ý của người mua. ## 3. Chế tài đối với Người bán vi phạm - Từ chối bảo hành hợp lệ mà không có lý do chín
+Q4: Bên chịu trách nhiệm phải phản hồi yêu cầu hỗ trợ và xử lý trong thời hạn nào?
+  Gold: Phản hồi trong 48 giờ làm việc và xử lý không quá 14 ngày làm việc.
+  Evidence rank: không có | Điểm: 0/2
+    1. score=0.3317 doc_id=seller-warranty-policy | # Quy định trách nhiệm bảo hành đối với Người bán ## 1. Nghĩa vụ tiếp nhận và xử lý bảo hành Người bán có trách nhiệm cung cấp phiếu bảo hành hoặc kíc
+    2. score=0.2328 doc_id=seller-warranty-policy | iệc**. - Thời gian xử lý sửa chữa hoặc đổi mới sản phẩm không quá **14 ngày làm việc** kể từ khi nhận sản phẩm bảo hành. ## 2. Chi phí phát sinh trong
+    3. score=0.1588 doc_id=seller-warranty-policy | ữa có phí sau khi thỏa thuận và được sự đồng ý của người mua. ## 3. Chế tài đối với Người bán vi phạm - Từ chối bảo hành hợp lệ mà không có lý do chín
+Q5: Hạn mức hoàn cước tối đa cho đơn nội tỉnh và liên tỉnh là bao nhiêu?
+  Gold: Tối đa 50.000 VNĐ cho đơn nội tỉnh và 100.000 VNĐ cho đơn liên tỉnh.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.5112 doc_id=shipping-fee-refund-policy | tự thanh toán chi phí cước vận chuyển 2 chiều cho đơn vị giao vận. ## 2. Hạn mức hỗ trợ cước vận chuyển - Hạn mức hoàn cước tối đa hỗ trợ cho một đơn 
+    2. score=0.1551 doc_id=shipping-fee-refund-policy | # Chính sách chi phí vận chuyển và hoàn cước ## 1. Quy định người chịu phí vận chuyển khi đổi trả - **Lỗi do người bán hoặc đơn vị vận chuyển** (giao 
+    3. score=0.1515 doc_id=buyer-dispute-resolution-policy | # Quy trình giải quyết tranh chấp giữa Người mua và Người bán ## 1. Giai đoạn thương lượng trực tiếp Khi phát sinh khiếu nại, Người mua và Người bán c
+Tổng điểm: 8/10
+A/B metadata filter (audience=seller):
+  Không lọc: seller-warranty-policy, buyer-dispute-resolution-policy, seller-warranty-policy
+  Có lọc: seller-warranty-policy, seller-warranty-policy, seller-warranty-policy
+
+=== Chiến lược: recursive ===
+Số chunk: 14
+Độ dài trung bình: 302.29
+Q1: Hai bên thương lượng tranh chấp trong bao lâu trước khi yêu cầu sàn can thiệp?
+  Gold: Hai bên có 24 giờ thương lượng trước khi một bên yêu cầu sàn can thiệp.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.4206 doc_id=buyer-dispute-resolution-policy | # Quy trình giải quyết tranh chấp giữa Người mua và Người bán ## 1. Giai đoạn thương lượng trực tiếp Khi phát sinh khiếu nại, Người mua và Người bán c
+    2. score=0.2905 doc_id=buyer-dispute-resolution-policy | Bộ phận Tranh chấp của Sàn sẽ: - Yêu cầu Người mua cung cấp bằng chứng video unboxing và ảnh chụp sản phẩm trong vòng 24 giờ. - Yêu cầu Người bán cung
+    3. score=0.1562 doc_id=seller-warranty-policy | Quy định thời gian phản hồi: - Khi nhận được yêu cầu hỗ trợ bảo hành từ người mua, người bán phải phản hồi trong vòng **48 giờ làm việc**. - Thời gian
+Q2: Thời hạn trả hàng của Shopee Mall và shop thường là bao nhiêu ngày?
+  Gold: Shopee Mall là 7 ngày và shop thường là 3 ngày kể từ khi nhận hàng thành công.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.4082 doc_id=return-refund-policy | # Chính sách đổi trả và hoàn tiền dành cho Người mua ## 1. Điều kiện đổi trả hàng Người mua có quyền gửi yêu cầu trả hàng và hoàn tiền trong vòng **7 
+    2. score=0.2087 doc_id=seller-warranty-policy | ## 3. Chế tài đối với Người bán vi phạm - Từ chối bảo hành hợp lệ mà không có lý do chính đáng: Hệ thống sẽ trừ **3 điểm Sao Quả Tạ** và khóa gian hàn
+    3. score=0.2057 doc_id=shipping-fee-refund-policy | ## 2. Hạn mức hỗ trợ cước vận chuyển - Hạn mức hoàn cước tối đa hỗ trợ cho một đơn hàng đổi trả là **50.000 VNĐ** (đối với đơn nội tỉnh) và **100.000 
+Q3: Người bán tích lũy 12 điểm phạt trở lên sẽ chịu chế tài gì?
+  Gold: Gian hàng có thể bị khóa 28 ngày hoặc chấm dứt hợp tác vĩnh viễn.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.4458 doc_id=seller-penalty-violation-policy | ## 2. Thang điểm phạt và chế tài xử lý - **Tỷ lệ hủy đơn cao (> 10% trong tuần)**: Cộng 2 điểm phạt Sao Quả Tạ. - **Đăng bán sản phẩm cấm**: Cộng 4 đi
+    2. score=0.2504 doc_id=seller-warranty-policy | ## 3. Chế tài đối với Người bán vi phạm - Từ chối bảo hành hợp lệ mà không có lý do chính đáng: Hệ thống sẽ trừ **3 điểm Sao Quả Tạ** và khóa gian hàn
+    3. score=0.2344 doc_id=seller-penalty-violation-policy | # Quy định xử phạt vi phạm dành cho Người bán ## 1. Các hành vi vi phạm nghiêm trọng - Đăng bán hàng giả, hàng nhái, hàng vi phạm bản quyền thương hiệ
+Q4: Bên chịu trách nhiệm phải phản hồi yêu cầu hỗ trợ và xử lý trong thời hạn nào?
+  Gold: Phản hồi trong 48 giờ làm việc và xử lý không quá 14 ngày làm việc.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.3037 doc_id=seller-warranty-policy | Quy định thời gian phản hồi: - Khi nhận được yêu cầu hỗ trợ bảo hành từ người mua, người bán phải phản hồi trong vòng **48 giờ làm việc**. - Thời gian
+    2. score=0.2395 doc_id=seller-warranty-policy | ## 2. Chi phí phát sinh trong quá trình bảo hành - Trong thời gian bảo hành còn hiệu lực: Người bán chịu toàn bộ chi phí kiểm tra, sửa chữa, thay thế 
+    3. score=0.1627 doc_id=seller-warranty-policy | # Quy định trách nhiệm bảo hành đối với Người bán ## 1. Nghĩa vụ tiếp nhận và xử lý bảo hành Người bán có trách nhiệm cung cấp phiếu bảo hành hoặc kíc
+Q5: Hạn mức hoàn cước tối đa cho đơn nội tỉnh và liên tỉnh là bao nhiêu?
+  Gold: Tối đa 50.000 VNĐ cho đơn nội tỉnh và 100.000 VNĐ cho đơn liên tỉnh.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.5443 doc_id=shipping-fee-refund-policy | ## 2. Hạn mức hỗ trợ cước vận chuyển - Hạn mức hoàn cước tối đa hỗ trợ cho một đơn hàng đổi trả là **50.000 VNĐ** (đối với đơn nội tỉnh) và **100.000 
+    2. score=0.1529 doc_id=buyer-dispute-resolution-policy | # Quy trình giải quyết tranh chấp giữa Người mua và Người bán ## 1. Giai đoạn thương lượng trực tiếp Khi phát sinh khiếu nại, Người mua và Người bán c
+    3. score=0.1411 doc_id=shipping-fee-refund-policy | # Chính sách chi phí vận chuyển và hoàn cước ## 1. Quy định người chịu phí vận chuyển khi đổi trả - **Lỗi do người bán hoặc đơn vị vận chuyển** (giao 
+Tổng điểm: 10/10
+A/B metadata filter (audience=seller):
+  Không lọc: seller-warranty-policy, seller-warranty-policy, buyer-dispute-resolution-policy
+  Có lọc: seller-warranty-policy, seller-warranty-policy, seller-warranty-policy
+
+=== Chiến lược: heading ===
+Số chunk: 17
+Độ dài trung bình: 248.59
+Q1: Hai bên thương lượng tranh chấp trong bao lâu trước khi yêu cầu sàn can thiệp?
+  Gold: Hai bên có 24 giờ thương lượng trước khi một bên yêu cầu sàn can thiệp.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.4522 doc_id=buyer-dispute-resolution-policy | ## 2. Giai đoạn Sàn khiếu nại can thiệp (Dispute Escalation) Nếu hai bên không đạt được thỏa thuận sau 24 giờ, một trong hai bên có quyền nhấn nút **"
+    2. score=0.2085 doc_id=buyer-dispute-resolution-policy | ## 1. Giai đoạn thương lượng trực tiếp Khi phát sinh khiếu nại, Người mua và Người bán có thời hạn **24 giờ** để trao đổi và thỏa thuận giải pháp thôn
+    3. score=0.1260 doc_id=buyer-dispute-resolution-policy | # Quy trình giải quyết tranh chấp giữa Người mua và Người bán
+Q2: Thời hạn trả hàng của Shopee Mall và shop thường là bao nhiêu ngày?
+  Gold: Shopee Mall là 7 ngày và shop thường là 3 ngày kể từ khi nhận hàng thành công.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.3436 doc_id=return-refund-policy | ## 1. Điều kiện đổi trả hàng Người mua có quyền gửi yêu cầu trả hàng và hoàn tiền trong vòng **7 ngày** (đối với Shopee Mall / LazMall) hoặc **3 ngày*
+    2. score=0.2087 doc_id=seller-warranty-policy | ## 3. Chế tài đối với Người bán vi phạm - Từ chối bảo hành hợp lệ mà không có lý do chính đáng: Hệ thống sẽ trừ **3 điểm Sao Quả Tạ** và khóa gian hàn
+    3. score=0.2077 doc_id=seller-penalty-violation-policy | ## 1. Các hành vi vi phạm nghiêm trọng - Đăng bán hàng giả, hàng nhái, hàng vi phạm bản quyền thương hiệu. - Tự đặt đơn hàng của gian hàng mình (buff 
+Q3: Người bán tích lũy 12 điểm phạt trở lên sẽ chịu chế tài gì?
+  Gold: Gian hàng có thể bị khóa 28 ngày hoặc chấm dứt hợp tác vĩnh viễn.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.4458 doc_id=seller-penalty-violation-policy | ## 2. Thang điểm phạt và chế tài xử lý - **Tỷ lệ hủy đơn cao (> 10% trong tuần)**: Cộng 2 điểm phạt Sao Quả Tạ. - **Đăng bán sản phẩm cấm**: Cộng 4 đi
+    2. score=0.3381 doc_id=seller-penalty-violation-policy | # Quy định xử phạt vi phạm dành cho Người bán
+    3. score=0.2504 doc_id=seller-warranty-policy | ## 3. Chế tài đối với Người bán vi phạm - Từ chối bảo hành hợp lệ mà không có lý do chính đáng: Hệ thống sẽ trừ **3 điểm Sao Quả Tạ** và khóa gian hàn
+Q4: Bên chịu trách nhiệm phải phản hồi yêu cầu hỗ trợ và xử lý trong thời hạn nào?
+  Gold: Phản hồi trong 48 giờ làm việc và xử lý không quá 14 ngày làm việc.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.2851 doc_id=seller-warranty-policy | ## 1. Nghĩa vụ tiếp nhận và xử lý bảo hành Người bán có trách nhiệm cung cấp phiếu bảo hành hoặc kích hoạt bảo hành điện tử cho tất cả sản phẩm thuộc 
+    2. score=0.2395 doc_id=seller-warranty-policy | ## 2. Chi phí phát sinh trong quá trình bảo hành - Trong thời gian bảo hành còn hiệu lực: Người bán chịu toàn bộ chi phí kiểm tra, sửa chữa, thay thế 
+    3. score=0.1581 doc_id=seller-warranty-policy | # Quy định trách nhiệm bảo hành đối với Người bán
+Q5: Hạn mức hoàn cước tối đa cho đơn nội tỉnh và liên tỉnh là bao nhiêu?
+  Gold: Tối đa 50.000 VNĐ cho đơn nội tỉnh và 100.000 VNĐ cho đơn liên tỉnh.
+  Evidence rank: 1 | Điểm: 2/2
+    1. score=0.5443 doc_id=shipping-fee-refund-policy | ## 2. Hạn mức hỗ trợ cước vận chuyển - Hạn mức hoàn cước tối đa hỗ trợ cho một đơn hàng đổi trả là **50.000 VNĐ** (đối với đơn nội tỉnh) và **100.000 
+    2. score=0.2357 doc_id=shipping-fee-refund-policy | # Chính sách chi phí vận chuyển và hoàn cước
+    3. score=0.2132 doc_id=return-refund-policy | # Chính sách đổi trả và hoàn tiền dành cho Người mua
+Tổng điểm: 10/10
+A/B metadata filter (audience=seller):
+  Không lọc: seller-warranty-policy, buyer-dispute-resolution-policy, seller-warranty-policy
+  Có lọc: seller-warranty-policy, seller-warranty-policy, seller-warranty-policy
+
+=== Phân tích lỗi/rủi ro ===
+Failure thật: fixed_size Q4 chỉ đạt 0/2; lexical hashing ưu tiên từ trùng lặp và có thể xếp chunk cùng chủ đề nhưng thiếu đủ bằng chứng lên cao.

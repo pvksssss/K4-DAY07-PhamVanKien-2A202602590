@@ -1,0 +1,6 @@
+doc_id,file_path,title,source_url,retrieved_at,document_version,license_or_permission
+buyer-dispute-resolution-policy,data/ecommerce/buyer-dispute-resolution-policy.md,Quy trình giải quyết tranh chấp giữa Người mua và Người bán,https://shopee.vn/docs/policy-dispute-resolution,2026-09-20,2.0,user-provided
+return-refund-policy,data/ecommerce/return-refund-policy.md,Chính sách đổi trả và hoàn tiền dành cho Người mua,https://shopee.vn/docs/policy-return-refund,2026-09-20,2.1,user-provided
+seller-penalty-violation-policy,data/ecommerce/seller-penalty-violation-policy.md,Quy định xử phạt vi phạm dành cho Người bán,https://shopee.vn/docs/policy-seller-penalty,2026-09-20,3.0,user-provided
+seller-warranty-policy,data/ecommerce/seller-warranty-policy.md,Quy định trách nhiệm bảo hành đối với Người bán,https://shopee.vn/docs/policy-seller-warranty,2026-09-20,1.5,user-provided
+shipping-fee-refund-policy,data/ecommerce/shipping-fee-refund-policy.md,Chính sách chi phí vận chuyển và hoàn cước,https://shopee.vn/docs/policy-shipping-refund,2026-09-20,1.2,user-provided
