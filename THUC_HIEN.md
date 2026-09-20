@@ -41,3 +41,10 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Xác nhận RED: `python -m pytest tests/test_regressions.py -v` → 4 failed do `NotImplementedError`.
 - [x] Triển khai `SentenceChunker`, `RecursiveChunker`, `compute_similarity` và `ChunkingStrategyComparator`.
 - [x] Xác nhận GREEN: lệnh kiểm tra tập trung → **27 passed, 19 deselected**.
+
+### 2026-09-20 — Task 2: EmbeddingStore in-memory
+
+- [x] Viết regression test trước cho copy metadata, ẩn embedding và filter-before-ranking.
+- [x] Xác nhận RED: 3 test mới thất bại tại `EmbeddingStore.add_documents` chưa triển khai.
+- [x] Chuẩn hóa record, dùng chung một đường ranking, lọc trước khi xếp hạng và xóa theo `doc_id`.
+- [x] Xác nhận GREEN: lệnh kiểm tra store tập trung → **17 passed, 32 deselected**.
