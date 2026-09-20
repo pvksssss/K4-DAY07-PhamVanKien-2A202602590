@@ -74,6 +74,10 @@ Exactly five verifiable questions will be defined with gold evidence markers. At
 
 `report/REPORT_NHOM.md` will document the repository experiment as a single-person submission because no teammate information was supplied. It will compare the three strategies as experimental configurations and will not claim that unnamed people performed work. It will include corpus inventory, metadata schema, five shared benchmark questions and gold answers, strategy comparison, filter evidence, failure analysis, and presentation points.
 
+## Work Log
+
+`THUC_HIEN.md` at the repository root will be maintained throughout implementation. Each completed stage will record the date, files changed, commands run, observed results, and remaining work. Entries must report actual evidence and must not mark a stage complete before its verification command succeeds.
+
 ## Testing and Evidence
 
 Existing tests are the primary contract. They will be run before implementation to establish the expected red baseline, then in focused groups during implementation, and finally as a complete suite. Additional regression tests will cover important behavior not fully asserted by the starter suite: punctuation preservation, recursive chunk merging and hard-split fallback, metadata copying, filter-before-ranking, hidden embeddings, empty-store agent behavior, and grounded prompt construction.
