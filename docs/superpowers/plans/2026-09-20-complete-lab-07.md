@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Produce a complete, evidence-backed Lab 07 submission with passing core code, a traceable eBay policy corpus, a reproducible five-query benchmark, and completed reports.
+**Goal:** Produce a complete, evidence-backed Lab 07 submission with passing core code, a traceable eBay return-and-refund policy corpus, a reproducible five-query benchmark, and completed reports.
 
 **Architecture:** Keep the starter public APIs and implement the required behavior with a deterministic in-memory vector store. Build a separate benchmark pipeline that parses policy Markdown, applies three chunking strategies, ranks chunks with a dependency-free lexical hashing embedder, and writes evidence consumed by the reports and work log.
 
@@ -245,16 +245,16 @@ git add -- src/agent.py tests/test_regressions.py THUC_HIEN.md
 git commit -m "feat: implement grounded knowledge agent"
 ```
 
-### Task 4: Build and audit the public policy corpus
+### Task 4: Build and audit the return-and-refund policy corpus
 
 **Files:**
-- Create: `data/ebay-policies/money-back-guarantee.md`
-- Create: `data/ebay-policies/returning-items.md`
-- Create: `data/ebay-policies/item-not-received.md`
-- Create: `data/ebay-policies/seller-return-requirements.md`
-- Create: `data/ebay-policies/item-condition-and-warranty.md`
-- Create: `data/ebay-policies/abusive-buyer-policy.md`
-- Create: `data/ebay-policies/sources.csv`
+- Create: `data/ebay-return-refund/return-eligibility.md`
+- Create: `data/ebay-return-refund/return-window.md`
+- Create: `data/ebay-return-refund/return-shipping-and-labels.md`
+- Create: `data/ebay-return-refund/refund-processing-time.md`
+- Create: `data/ebay-return-refund/item-not-received-refund.md`
+- Create: `data/ebay-return-refund/seller-return-refund-obligations.md`
+- Create: `data/ebay-return-refund/sources.csv`
 - Create: `tests/test_submission_assets.py`
 - Modify: `THUC_HIEN.md`
 
@@ -270,11 +270,11 @@ Create `tests/test_submission_assets.py` with a small standard-library front-mat
 
 Run: `pytest tests/test_submission_assets.py -v`
 
-Expected: failure reporting that `data/ebay-policies` or its six documents do not exist.
+Expected: failure reporting that `data/ebay-return-refund` or its six documents do not exist.
 
 - [ ] **Step 3: Verify six official source pages**
 
-Search current official eBay help/policy pages for the six named topics. Record direct canonical page URLs, visible update/effective dates when stated, and concise facts needed for the five benchmark answers. Reject search-result URLs, third-party summaries, inaccessible pages, and pages whose automated access is disallowed.
+Search current official eBay help/policy pages for the six named return/refund topics: eligibility, time window, return shipping/labels, refund timing, item-not-received refunds, and seller obligations. Record direct canonical page URLs, visible update/effective dates when stated, and concise facts needed for the five benchmark answers. Reject search-result URLs, third-party summaries, inaccessible pages, and pages whose automated access is disallowed.
 
 - [ ] **Step 4: Write clean Vietnamese policy documents and inventory**
 
@@ -289,8 +289,8 @@ Expected: all corpus-audit tests pass.
 - [ ] **Step 6: Update the work log and commit**
 
 ```powershell
-git add -- data/ebay-policies tests/test_submission_assets.py THUC_HIEN.md
-git commit -m "data: add traceable eBay policy corpus"
+git add -- data/ebay-return-refund tests/test_submission_assets.py THUC_HIEN.md
+git commit -m "data: add return and refund policy corpus"
 ```
 
 ### Task 5: Implement the reproducible benchmark
@@ -302,7 +302,7 @@ git commit -m "data: add traceable eBay policy corpus"
 - Modify: `THUC_HIEN.md`
 
 **Interfaces:**
-- Consumes: `data/ebay-policies/*.md`, `Document`, `EmbeddingStore`, `FixedSizeChunker`, and `RecursiveChunker`.
+- Consumes: `data/ebay-return-refund/*.md`, `Document`, `EmbeddingStore`, `FixedSizeChunker`, and `RecursiveChunker`.
 - Produces: `parse_policy_file(path)`, `HeadingChunker.chunk(text)`, `LexicalHashEmbedder.__call__(text)`, benchmark result dictionaries, and deterministic text output.
 
 - [ ] **Step 1: Add failing benchmark unit tests**

@@ -9,7 +9,7 @@ Turn the starter repository into a complete, reproducible Lab 07 submission for 
 The work covers four connected deliverables:
 
 1. Complete the public APIs in `src/chunking.py`, `src/store.py`, and `src/agent.py` without changing their existing signatures.
-2. Build a six-document Vietnamese corpus derived from current public official eBay policy pages, with buyer and seller audiences represented and one inventory row per document.
+2. Build a six-document Vietnamese corpus focused exclusively on return and refund policies, derived from current public official eBay pages, with buyer and seller audiences represented and one inventory row per document.
 3. Add a reproducible benchmark that compares fixed-size, recursive, and heading/section-aware chunking and records retrieval results for exactly five questions.
 4. Replace the report templates with an honest individual report and a repository-level experiment report. No unprovided teammate names or group participation claims will be invented.
 
@@ -39,7 +39,7 @@ Both `search()` and `search_with_filter()` will delegate ranking to the same hel
 
 ## Corpus and Provenance
 
-The corpus will live under `data/ebay-policies/` and contain six focused Markdown documents. Each document will be a concise Vietnamese paraphrase of a current official, publicly accessible eBay policy page rather than a long copied passage. The set will cover returns/refunds, money-back protection, item-not-received handling, seller return obligations, warranty or condition obligations, and abusive or invalid claims.
+The corpus will live under `data/ebay-return-refund/` and contain six focused Markdown documents. Each document will be a concise Vietnamese paraphrase of a current official, publicly accessible eBay policy page rather than a long copied passage. The set will cover return eligibility, return windows, return shipping and labels, refund processing and timing, item-not-received refunds, and seller return/refund obligations. Every document and benchmark question must remain within the single domain of return and refund policy.
 
 Every file will have YAML front matter containing:
 
@@ -52,11 +52,11 @@ Every file will have YAML front matter containing:
 - `category`
 - `language: vi`
 
-`data/ebay-policies/sources.csv` will map one-to-one to the six Markdown files and record the public-source basis. Source discovery and verification will use official eBay pages only. If a selected page is inaccessible or disallows automated access, it will be replaced by another official public page rather than bypassed.
+`data/ebay-return-refund/sources.csv` will map one-to-one to the six Markdown files and record the public-source basis. Source discovery and verification will use official eBay pages only. If a selected page is inaccessible or disallows automated access, it will be replaced by another official public page rather than bypassed.
 
 ## Benchmark Design
 
-`bench.py` will parse YAML front matter without introducing a new required dependency, separate metadata from body text, create chunk-level `Document` objects, and retain the original `doc_id` in every chunk.
+`bench.py` will parse YAML front matter from `data/ebay-return-refund/` without introducing a new required dependency, separate metadata from body text, create chunk-level `Document` objects, and retain the original `doc_id` in every chunk.
 
 Three strategies will be evaluated on the same corpus and questions:
 

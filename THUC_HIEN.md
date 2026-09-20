@@ -19,7 +19,8 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Thống nhất phạm vi làm trọn bài: code lõi, corpus sáu tài liệu, benchmark năm câu hỏi và hai báo cáo.
 - [x] Tạo đặc tả tại `docs/superpowers/specs/2026-09-20-complete-lab-07-design.md`.
 - [x] Commit đặc tả ban đầu: `d91d021 docs: define complete Lab 07 design`.
-- [ ] Hoàn thành kế hoạch triển khai chi tiết.
+- [x] Hoàn thành kế hoạch triển khai chi tiết tại `docs/superpowers/plans/2026-09-20-complete-lab-07.md`.
+- [x] Thu hẹp corpus và benchmark về một chủ đề duy nhất: chính sách đổi trả và hoàn tiền.
 - [ ] Ghi nhận baseline của bộ test.
 - [ ] Hoàn thiện code lõi.
 - [ ] Hoàn thiện corpus và kiểm tra provenance.
