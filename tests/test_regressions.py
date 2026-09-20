@@ -1,4 +1,7 @@
+import main as app_main
+
 from src.chunking import RecursiveChunker, SentenceChunker
+from src.agent import KnowledgeBaseAgent
 from src.models import Document
 from src.store import EmbeddingStore
 
@@ -59,3 +62,45 @@ def test_filter_with_no_matches_returns_empty_list():
         )
         == []
     )
+
+
+def test_agent_does_not_call_llm_for_empty_store():
+    calls = []
+    agent = KnowledgeBaseAgent(
+        EmbeddingStore(), lambda prompt: calls.append(prompt) or "x"
+    )
+    answer = agent.answer("Câu hỏi")
+    assert calls == []
+    assert "không tìm thấy" in answer.lower()
+
+
+def test_agent_prompt_numbers_context_and_requires_grounding():
+    store = EmbeddingStore(embedding_fn=lambda text: [1.0])
+    store.add_documents(
+        [
+            Document(
+                "chunk-1",
+                "Bằng chứng",
+                {"source": "policy.md", "doc_id": "policy"},
+            )
+        ]
+    )
+    prompts = []
+    agent = KnowledgeBaseAgent(
+        store, lambda prompt: prompts.append(prompt) or "Trả lời"
+    )
+    assert agent.answer("Quy định là gì?", top_k=1) == "Trả lời"
+    assert "[1]" in prompts[0]
+    assert "policy.md" in prompts[0]
+    assert "chỉ" in prompts[0].lower()
+
+
+def test_configure_utf8_output_reconfigures_stream():
+    calls = []
+
+    class Stream:
+        def reconfigure(self, **kwargs):
+            calls.append(kwargs)
+
+    app_main.configure_utf8_output(Stream())
+    assert calls == [{"encoding": "utf-8", "errors": "replace"}]

@@ -30,6 +30,14 @@ SAMPLE_FILES = [
 ]
 
 
+def configure_utf8_output(stream=None) -> None:
+    """Use UTF-8 for terminal output when the stream supports reconfiguration."""
+    target = stream or sys.stdout
+    reconfigure = getattr(target, "reconfigure", None)
+    if callable(reconfigure):
+        reconfigure(encoding="utf-8", errors="replace")
+
+
 def load_documents_from_files(file_paths: list[str]) -> list[Document]:
     """Load documents from file paths for the manual demo."""
     allowed_extensions = {".md", ".txt"}
@@ -127,6 +135,7 @@ def run_manual_demo(question: str | None = None, sample_files: list[str] | None 
 
 
 def main() -> int:
+    configure_utf8_output()
     question = " ".join(sys.argv[1:]).strip() if len(sys.argv) > 1 else None
     return run_manual_demo(question=question)
 

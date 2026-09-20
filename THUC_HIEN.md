@@ -22,7 +22,7 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Hoàn thành kế hoạch triển khai chi tiết tại `docs/superpowers/plans/2026-09-20-complete-lab-07.md`.
 - [x] Thu hẹp corpus và benchmark về một chủ đề duy nhất: chính sách đổi trả và hoàn tiền.
 - [x] Ghi nhận baseline của bộ test.
-- [ ] Hoàn thiện code lõi.
+- [x] Hoàn thiện code lõi.
 - [ ] Hoàn thiện corpus và kiểm tra provenance.
 - [ ] Chạy benchmark và sinh kết quả.
 - [ ] Hoàn thiện báo cáo.
@@ -48,3 +48,12 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Xác nhận RED: 3 test mới thất bại tại `EmbeddingStore.add_documents` chưa triển khai.
 - [x] Chuẩn hóa record, dùng chung một đường ranking, lọc trước khi xếp hạng và xóa theo `doc_id`.
 - [x] Xác nhận GREEN: lệnh kiểm tra store tập trung → **17 passed, 32 deselected**.
+
+### 2026-09-20 — Task 3: KnowledgeBaseAgent và demo CLI
+
+- [x] Viết test RED cho store rỗng không gọi LLM và prompt có nguồn đánh số/ràng buộc grounding.
+- [x] Triển khai luồng retrieve → context → prompt → `llm_fn` và thông báo khi không có dữ liệu.
+- [x] Bộ test sau triển khai: **51 passed**.
+- [x] Phát hiện `main.py` lỗi `UnicodeEncodeError` trên terminal CP1252; xác nhận nguyên nhân bằng `sys.stdout.encoding` và chạy đối chứng với `PYTHONIOENCODING=utf-8`.
+- [x] Thêm regression test RED và cấu hình UTF-8 tại biên CLI.
+- [x] Xác nhận sau sửa: **52 passed**; `python main.py "Chunking là gì?"` thoát mã 0 và in đúng tiếng Việt.
