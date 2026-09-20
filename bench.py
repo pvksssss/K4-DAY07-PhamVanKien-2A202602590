@@ -11,7 +11,13 @@ from typing import Protocol
 from dotenv import load_dotenv
 
 from main import configure_utf8_output
-from src import Document, EmbeddingStore, FixedSizeChunker, RecursiveChunker
+from src import (
+    Document,
+    EmbeddingStore,
+    FixedSizeChunker,
+    RecursiveChunker,
+    SentenceChunker,
+)
 from src.embeddings import OpenRouterEmbedder
 
 
@@ -337,6 +343,7 @@ def run_benchmark(embedding_fn=None) -> list[dict]:
         ("fixed_size", FixedSizeChunker(chunk_size=450, overlap=80)),
         ("recursive", RecursiveChunker(chunk_size=450)),
         ("heading", HeadingChunker(max_chars=700)),
+        ("sentence", SentenceChunker(max_sentences_per_chunk=3)),
     ]
     evaluations = [
         evaluate_strategy(name, chunker, corpus, embedder)

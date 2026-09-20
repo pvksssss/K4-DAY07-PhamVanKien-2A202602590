@@ -62,6 +62,19 @@ def test_benchmark_defines_exactly_five_cases_and_one_filter_case():
     assert any(case.get("metadata_filter") == {"audience": "seller"} for case in BENCHMARK_CASES)
 
 
+def test_benchmark_runs_four_distinct_chunking_strategies(tmp_path, monkeypatch):
+    monkeypatch.setattr(bench, "OUTPUT_PATH", tmp_path / "benchmark.txt")
+
+    evaluations = bench.run_benchmark(embedding_fn=LexicalHashEmbedder(dim=64))
+
+    assert [evaluation["name"] for evaluation in evaluations] == [
+        "fixed_size",
+        "recursive",
+        "heading",
+        "sentence",
+    ]
+
+
 def test_openrouter_embedder_batches_documents_and_caches_queries():
     assert hasattr(embeddings, "OpenRouterEmbedder")
     OpenRouterEmbedder = embeddings.OpenRouterEmbedder

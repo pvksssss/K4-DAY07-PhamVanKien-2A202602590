@@ -118,3 +118,14 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Benchmark Nemotron cuối: fixed-size **10/10**, recursive **9/10**, heading **9/10**. Q3 được cải thiện từ 0 lên 2; Q4 của recursive/heading có bằng chứng đúng ở rank 2 nên đạt 1/2.
 - [x] Một lần pytest trong ngữ cảnh cấp quyền gặp setup error do ACL của thư mục temp dùng chung `pytest-of-ADMIN`; chạy đối chứng với basetemp trong workspace xác nhận đây là lỗi môi trường, không phải assertion code.
 - [x] Xác minh cuối sau mọi thay đổi: `python -m pytest tests/ -q --basetemp=.pytest-tmp -p no:cacheprovider` → **65 passed in 0.09s**; `main.py` exit 0; `git diff --check` sạch; `.env` được ignore và không được Git theo dõi.
+
+### 2026-09-20 — Bổ sung chiến lược thứ tư cho nhóm 4 người
+
+- [x] Chọn `SentenceChunker(max_sentences_per_chunk=3)` làm chiến lược thứ tư, khác fixed-size, recursive và heading-aware.
+- [x] Viết test trước yêu cầu `run_benchmark()` trả đúng bốn chiến lược; xác nhận RED do thiếu `sentence`.
+- [x] Thêm sentence strategy vào `bench.py`; focused test chuyển GREEN.
+- [x] Chạy lại bằng `nvidia/nemotron-3-embed-1b:free`: sentence tạo **20 chunk**, độ dài trung bình **347,60**, đạt **10/10**.
+- [x] Kết quả so sánh mới: fixed-size **10/10**, recursive **9/10**, heading-aware **9/10**, sentence-based **10/10**.
+- [x] Sentence-based đưa evidence Q4 lên rank 1, trong khi recursive và heading chỉ đưa lên rank 2.
+- [x] Xác minh sau cập nhật: toàn bộ **66 test pass**, `git diff --check` không có lỗi whitespace và kết quả benchmark có đúng 4 chiến lược.
+- [x] Hiệu chỉnh phân công theo xác nhận của người dùng: Phạm Văn Kiên phụ trách **sentence-based**, ba thành viên còn lại phụ trách fixed-size, recursive và heading-aware; cập nhật báo cáo cá nhân từ heading 9/10 sang sentence 10/10.
