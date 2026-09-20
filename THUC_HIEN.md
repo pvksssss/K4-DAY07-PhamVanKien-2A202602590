@@ -26,8 +26,8 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Hoàn thiện code lõi.
 - [x] Hoàn thiện corpus và kiểm tra provenance.
 - [x] Chạy benchmark và sinh kết quả.
-- [ ] Hoàn thiện báo cáo.
-- [ ] Chạy xác minh cuối cùng.
+- [x] Hoàn thiện báo cáo.
+- [x] Chạy xác minh cuối cùng.
 
 ## Bằng chứng hiện có
 
@@ -96,3 +96,13 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Khôi phục 2 file mẫu ban đầu trong `data/ecommerce/`, loại 3 file bổ sung và `data/ecommerce_sources.csv` khỏi corpus cuối.
 - [x] Chuyển audit và benchmark về 6 tài liệu; kiểm tra tập trung đạt **8 passed**.
 - [x] Benchmark cuối: fixed-size **8/10**, recursive **8/10**, heading **8/10**; filter `audience=seller` đưa top-3 về đúng tài liệu nghĩa vụ người bán.
+
+### 2026-09-20 — Task 6 và 7: Báo cáo, review và xác minh cuối
+
+- [x] Hoàn thiện `report/REPORT_CANHAN.md` với phép tính chunk, mô tả thuật toán, 5 phép đo cosine, kết quả heading strategy và tự đánh giá có căn cứ.
+- [x] Hoàn thiện `report/REPORT_NHOM.md` dưới dạng báo cáo repository một người; không tạo tên thành viên không có thật.
+- [x] `python -m pytest tests/ -q` → **60 passed in 0.10s**.
+- [x] `python main.py "Chunking là gì?"` → exit 0, nạp 5 tài liệu demo, tìm kiếm và agent đều trả kết quả.
+- [x] `python bench.py` → exit 0, tái tạo `ket_qua_benchmark.txt`; ba chiến lược đều **8/10**.
+- [x] Scan `src/` không còn `TODO`, `NotImplementedError` hoặc bare `pass`; scan báo cáo không còn placeholder thực; `git diff --check` được làm sạch.
+- [x] Review thủ công do phiên làm việc không được tự tạo sub-agent khi người dùng chưa yêu cầu; không phát hiện lỗi nghiêm trọng hoặc quan trọng còn mở.
