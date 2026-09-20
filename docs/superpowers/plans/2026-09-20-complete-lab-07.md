@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Produce a complete, evidence-backed Lab 07 submission with passing core code, a traceable eBay return-and-refund policy corpus, a reproducible five-query benchmark, and completed reports.
+**Goal:** Produce a complete, evidence-backed Lab 07 submission with passing core code, a traceable Shopee Vietnam return-and-refund policy corpus, a reproducible five-query benchmark, and completed reports.
 
 **Architecture:** Keep the starter public APIs and implement the required behavior with a deterministic in-memory vector store. Build a separate benchmark pipeline that parses policy Markdown, applies three chunking strategies, ranks chunks with a dependency-free lexical hashing embedder, and writes evidence consumed by the reports and work log.
 
@@ -14,7 +14,7 @@
 
 - Preserve all existing public function and method signatures in `src/`.
 - Required code and tests must run without ChromaDB, neural-model packages, API keys, or network access.
-- Use only public official eBay pages for corpus provenance; do not bypass robots.txt, authentication, CAPTCHA, or access controls.
+- Use only public official Shopee Vietnam pages for corpus provenance; do not bypass robots.txt, authentication, CAPTCHA, or access controls.
 - Corpus documents are concise Vietnamese paraphrases with source URLs, not copied full pages.
 - Use exactly five benchmark questions and include at least one `audience` filter A/B run.
 - Do not invent teammate names, group participation, test output, benchmark output, or policy facts.
@@ -248,33 +248,33 @@ git commit -m "feat: implement grounded knowledge agent"
 ### Task 4: Build and audit the return-and-refund policy corpus
 
 **Files:**
-- Create: `data/ebay-return-refund/return-eligibility.md`
-- Create: `data/ebay-return-refund/return-window.md`
-- Create: `data/ebay-return-refund/return-shipping-and-labels.md`
-- Create: `data/ebay-return-refund/refund-processing-time.md`
-- Create: `data/ebay-return-refund/item-not-received-refund.md`
-- Create: `data/ebay-return-refund/seller-return-refund-obligations.md`
-- Create: `data/ebay-return-refund/sources.csv`
+- Create: `data/shopee-return-refund/return-eligibility.md`
+- Create: `data/shopee-return-refund/return-window.md`
+- Create: `data/shopee-return-refund/return-evidence.md`
+- Create: `data/shopee-return-refund/return-shipping-and-packaging.md`
+- Create: `data/shopee-return-refund/refund-methods-and-time.md`
+- Create: `data/shopee-return-refund/seller-return-refund-obligations.md`
+- Create: `data/shopee-return-refund/sources.csv`
 - Create: `tests/test_submission_assets.py`
 - Modify: `THUC_HIEN.md`
 
 **Interfaces:**
-- Consumes: official public eBay policy pages verified on the collection date.
+- Consumes: official public Shopee Vietnam policy pages verified on the collection date.
 - Produces: six Markdown files with parseable front matter and a one-to-one CSV inventory.
 
 - [ ] **Step 1: Add a failing corpus audit test**
 
-Create `tests/test_submission_assets.py` with a small standard-library front-matter parser and assertions that exactly six Markdown files exist, required keys are non-empty, `doc_id == path.stem`, IDs are unique, audiences include `buyer` and `seller`, every `source_url` uses HTTPS on an official eBay domain, and CSV IDs exactly equal document IDs.
+Create `tests/test_submission_assets.py` with a small standard-library front-matter parser and assertions that exactly six Markdown files exist, required keys are non-empty, `doc_id == path.stem`, IDs are unique, audiences include `buyer` and `seller`, every `source_url` uses HTTPS on an official Shopee Vietnam domain, and CSV IDs exactly equal document IDs.
 
 - [ ] **Step 2: Verify the audit fails because the corpus is absent**
 
 Run: `pytest tests/test_submission_assets.py -v`
 
-Expected: failure reporting that `data/ebay-return-refund` or its six documents do not exist.
+Expected: failure reporting that `data/shopee-return-refund` or its six documents do not exist.
 
 - [ ] **Step 3: Verify six official source pages**
 
-Search current official eBay help/policy pages for the six named return/refund topics: eligibility, time window, return shipping/labels, refund timing, item-not-received refunds, and seller obligations. Record direct canonical page URLs, visible update/effective dates when stated, and concise facts needed for the five benchmark answers. Reject search-result URLs, third-party summaries, inaccessible pages, and pages whose automated access is disallowed.
+Search current official Shopee Vietnam help/policy pages for the six named return/refund topics: eligibility, request window, evidence, return shipping/packaging, refund methods/timing, and seller obligations. Record direct canonical page URLs, visible update/effective dates when stated, and concise facts needed for the five benchmark answers. Reject search-result URLs, third-party summaries, inaccessible pages, and pages whose automated access is disallowed.
 
 - [ ] **Step 4: Write clean Vietnamese policy documents and inventory**
 
@@ -289,8 +289,8 @@ Expected: all corpus-audit tests pass.
 - [ ] **Step 6: Update the work log and commit**
 
 ```powershell
-git add -- data/ebay-return-refund tests/test_submission_assets.py THUC_HIEN.md
-git commit -m "data: add return and refund policy corpus"
+git add -- data/shopee-return-refund tests/test_submission_assets.py THUC_HIEN.md
+git commit -m "data: add Shopee return and refund corpus"
 ```
 
 ### Task 5: Implement the reproducible benchmark
@@ -302,7 +302,7 @@ git commit -m "data: add return and refund policy corpus"
 - Modify: `THUC_HIEN.md`
 
 **Interfaces:**
-- Consumes: `data/ebay-return-refund/*.md`, `Document`, `EmbeddingStore`, `FixedSizeChunker`, and `RecursiveChunker`.
+- Consumes: `data/shopee-return-refund/*.md`, `Document`, `EmbeddingStore`, `FixedSizeChunker`, and `RecursiveChunker`.
 - Produces: `parse_policy_file(path)`, `HeadingChunker.chunk(text)`, `LexicalHashEmbedder.__call__(text)`, benchmark result dictionaries, and deterministic text output.
 
 - [ ] **Step 1: Add failing benchmark unit tests**

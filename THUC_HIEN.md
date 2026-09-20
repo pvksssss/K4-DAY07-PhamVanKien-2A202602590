@@ -21,9 +21,10 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Commit đặc tả ban đầu: `d91d021 docs: define complete Lab 07 design`.
 - [x] Hoàn thành kế hoạch triển khai chi tiết tại `docs/superpowers/plans/2026-09-20-complete-lab-07.md`.
 - [x] Thu hẹp corpus và benchmark về một chủ đề duy nhất: chính sách đổi trả và hoàn tiền.
+- [x] Theo yêu cầu bổ sung, chọn nền tảng cụ thể là Shopee Việt Nam; không sử dụng corpus eBay.
 - [x] Ghi nhận baseline của bộ test.
 - [x] Hoàn thiện code lõi.
-- [ ] Hoàn thiện corpus và kiểm tra provenance.
+- [x] Hoàn thiện corpus và kiểm tra provenance.
 - [ ] Chạy benchmark và sinh kết quả.
 - [ ] Hoàn thiện báo cáo.
 - [ ] Chạy xác minh cuối cùng.
@@ -57,3 +58,13 @@ Tài liệu này ghi lại các công việc đã thực hiện, thay đổi tro
 - [x] Phát hiện `main.py` lỗi `UnicodeEncodeError` trên terminal CP1252; xác nhận nguyên nhân bằng `sys.stdout.encoding` và chạy đối chứng với `PYTHONIOENCODING=utf-8`.
 - [x] Thêm regression test RED và cấu hình UTF-8 tại biên CLI.
 - [x] Xác nhận sau sửa: **52 passed**; `python main.py "Chunking là gì?"` thoát mã 0 và in đúng tiếng Việt.
+
+### 2026-09-20 — Task 4: Crawl và chuẩn hóa corpus Shopee
+
+- [x] Viết corpus audit trước; xác nhận RED: 3 test thất bại vì chưa có thư mục/tài liệu/`sources.csv`.
+- [x] Tạo `crawl_urls.csv` gồm 6 URL chính thức thuộc `help.shopee.vn`, đủ metadata buyer/seller.
+- [x] Chạy crawler của repo; lần đầu bị sandbox chặn socket, lần chạy được cấp quyền đã kiểm tra `robots.txt` và lưu thành công **6/6 trang**, không có URL bị bỏ qua.
+- [x] Lưu bản crawl thô trong staging bị Git ignore; kiểm tra cho thấy mỗi trang dài khoảng 4,9–26,4 KB và có nội dung giao diện lặp.
+- [x] Làm sạch thành 6 tài liệu Markdown tập trung duy nhất vào chính sách đổi trả/hoàn tiền, không giữ menu/banner/nội dung ngoài chủ đề.
+- [x] Tạo `sources.csv` khớp một-một với tài liệu và ghi ngày truy xuất 2026-09-20.
+- [x] Corpus audit GREEN: **3 passed**; đủ metadata, 6 `doc_id` duy nhất, có cả `buyer` và `seller`, URL HTTPS chính thức của Shopee.
